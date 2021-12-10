@@ -15,82 +15,44 @@ const con = mysql.createConnection({
     host: "localhost",
     user: "root",
     password: "",
-    database: "domino"
+    database: "parts"
 });
 
 con.connect(function(err) {
     if (err) throw err;
-    console.log("Connected!");
+    console.log("Connected to the database!");
 });
 
 
 //Route
 app.get('/', (req, res) => {
-    res.send('Ate')
+    res.send('Serveris veikia')
 })
 
-app.get('/labas', (req, res) => {
-    res.send('Sveikutis, Zuikutis')
-})
-
-app.get('/labas/jonai', (req, res) => {
-    res.send('Sveikutis, jonai')
-})
-
-app.get('/labas/:vardas', (req, res) => {
-    res.send(`Sveikutis arba Sveikutė, ${req.params.vardas}`)
-})
-
-app.get('/sum/:d1/:d2', (req, res) => {
-    res.send(`Atsakymas: ${parseInt(req.params.d1) + parseInt(req.params.d2)}`)
-})
-
-app.get('/diff/:d1/:d2', (req, res) => {
-    res.send(`Atsakymas: ${parseInt(req.params.d1) - parseInt(req.params.d2)}`)
-})
-
-
-app.post('/calculator', (req, res) => {
-    const d1 = parseFloat(req.body.d1);
-    const d2 = parseFloat(req.body.d2);
-    let answer;
-    let errMsg;
-    switch (req.body.action) {
-        case '+':
-            answer = d1 + d2;
-            break;
-        case '-':
-            answer = d1 - d2;
-            break;
-        case 'X':
-            answer = d1 * d2;
-            break;
-        case '/':
-            if (0 === d2) {
-                errMsg = 'No way';
-            } else {
-                answer = d1 / d2;
-            }
-            break;
-        default:
-            errMsg = 'WTF?';
-    }
-    res.json({
-        answer: answer,
-        errMsg: errMsg
+app.get('/parts', (req, res) => {
+    const sql = `
+        SELECT * 
+        FROM parts
+    `;
+    con.query(sql, (err, result) => {
+        if (err) {
+            throw err;
+        }
+        res.json({
+            msg: 'OK',
+            parts: result
+        })
     })
 })
 
-
-
-app.post('/dominos/add', (req, res) => {
+app.post('/parts/add', (req, res) => {
     const sql = `
         INSERT INTO
-        dices
-        (left_side, right_side)
-        VALUES (?, ?)
+        parts
+        (part_number, part_number_1,description)
+        VALUES (?,?,?)
     `;
-    con.query(sql, [req.body.left, req.body.right], err => {
+    con.query(sql, [req.body.part_number, req.body.part_number_1, req.body.description], err => {
         if (err) throw err;
         console.log("1 record inserted");
     });
@@ -100,21 +62,34 @@ app.post('/dominos/add', (req, res) => {
 });
 
 
-app.get('/dominos', (req, res) => {
+app.delete("/parts/delete/:id", (req, res) => {
     const sql = `
-        SELECT * 
-        FROM dices
-    `;
-    con.query(sql, (err, result) => {
-        if (err) {
-            throw err;
-        }
-        res.json({
-            msg: 'OK',
-            dominos: result
-        })
-    })
-})
+          DELETE FROM parts
+      WHERE id=? 
+        `;
+    con.query(sql, [req.params.id], (err) => {
+      if (err) throw err;
+      console.log("1 record DELETED");
+    });
+    res.json({
+      msg: "OKi",
+    });
+  });
+
+  app.put("/parts/update/:id", (req, res) => {
+    const sql = `
+        UPDATE parts
+  SET part_number = ?, part_number_1=?, description=?
+  WHERE id=? 
+      `;
+    con.query(sql, [req.body.part_number, req.body.part_number_1, req.body.description, req.params.id], (err) => {
+      if (err) throw err;
+      console.log("1 record updated");
+    });
+    res.json({
+      msg: "OKi",
+    });
+  });
 
 
 
