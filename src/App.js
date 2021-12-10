@@ -12,6 +12,19 @@ function App(props) {
   const [parts, setParts] = useState([]);
   const [updated, setUpdated] = useState(Date.now());
 
+   // Filtras serveryje
+   const serverFilter = filter =>{
+     console.log(filter)
+    axios.get(`http://localhost:3003/parts/filter/${filter.f_value}/${filter.f_name}`).then((res) => {
+      
+      setParts(res.data.parts)
+     
+          
+
+    });
+    
+  }
+
   // Gauname duomenis is duombazes
   useEffect(() => {
     axios.get("http://localhost:3003/parts").then((res) => {
@@ -34,7 +47,7 @@ function App(props) {
          </Col>
 
          <Col className="border">
-         <PartsList parts={parts} partsUpdate={setUpdated} ></PartsList>
+         <PartsList parts={parts} partsUpdate={setUpdated} serverFilter={serverFilter}></PartsList>
          </Col>
         
 

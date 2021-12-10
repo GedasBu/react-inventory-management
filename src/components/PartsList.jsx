@@ -2,7 +2,7 @@ import {
   Table,
   Button,
   Card,
-  Row,
+  Form,
   InputGroup,
   FormControl,
 } from "react-bootstrap";
@@ -12,38 +12,71 @@ import EditPart from "./EditPart";
 import { useState } from "react";
 import { AddPart } from "./AddPart";
 import Filter from "./Filter";
-import DeleteForm from "./DeleteForm"
+import DeleteForm from "./DeleteForm";
+import { MdTurnedInNot } from "react-icons/md";
 
 const PartsList = (props) => {
   const [editPart, setEditPart] = useState({});
   const [addPartForm, setAddPartForm] = useState(false);
   const [editPartForm, setEditPartForm] = useState(false);
-  const [show, setShow] = useState(false);
-      
-  const handleClose = () => {
-    setShow(false);
-  console.log(show);
-  
-  
-  
-    }
-      const handleShow = () => setShow(true);
-  console.log(show)
-  
+  const [showDelModal, setshowDelModal] = useState(false);
+  const [delPartId, setDelPartId] = useState();
+
+  const [filterValue, setFilterValue] = useState({
+    f_name:'',
+    f_value:''
+  });
+
+  const filterHandler= (e)=>{   
+      if (e.key === "Enter") {
+        e.preventDefault();
+        // setFilterValue({...filterValue,f_name:e.target.name,
+        //   f_value: e.target.value})
+          props.serverFilter({f_name:e.target.name,f_value: e.target.value});  
+        } 
+       
+      // console.log(filterValue)      
+  };
+ 
+
+ 
+
+
+  const handleDelModalClose = () => {
+    setshowDelModal(false);
+  };
+  // show suteikiame id reiksme, kas iskart yra true todel atsidaro istrynimo langas. Id persiunčiame i del modala
+  const handleDelModalShow = (id) => {
+    setshowDelModal(true);
+    //Steitui priskiriam trinamos pozicijos Id
+    setDelPartId(id);
+  };
+
   // Pridedame nauja irasa i duombaze. Siunciam uzklausa ir serveri
   const addPartsHandler = (data) => {
     axios.post("http://localhost:3003/parts/add", data).then((res) => {
-    props.partsUpdate(Date.now());
-  });
-};
+      props.partsUpdate(Date.now());
+    });
+  };
 
   // Triname irasa is duomenu bazes. Siunciame uzklausa i serveri
+  const delPartHandler = () => {
+    console.log("delete id is state", delPartId);
+    axios
+      .delete("http://localhost:3003/parts/delete/" + delPartId)
+      .then((res) => {
+        props.partsUpdate(Date.now());
+      });
 
-  const delPartHandler = (id) => {
-    // axios.delete("http://localhost:3003/parts/delete/" + id).then((res) => {
-    //   props.partsUpdate(Date.now());
-    // });
+    //Filtras serverio puseje
+    const serverFilter = (filter) => {
+      // axios.get("http://localhost:3003/dominos/filter/"+filter).then((res) => {
+      //   setPlates(res.data.dominos.map(p=>({id:p.id,left:p.left_side,right:p.right_side})));
+      // });
+    };
 
+    //Uždarome delete issokanti langa
+    setshowDelModal(false);
   };
 
   //Atnaujiname irasa duomenu bazeje. Siunciame uzklausa i serveri.
@@ -57,8 +90,7 @@ const PartsList = (props) => {
     setEditPart({});
   };
 
-
-// Irasome redaguojamos prekes esamas reiksmes i state ir atiodarome detales redagavimo forma
+  // Irasome redaguojamos prekes esamas reiksmes i state ir atiodarome detales redagavimo forma
   const editPartDataHandler = (id, partNumber, partNumber2, description) => {
     setEditPart({
       id: id,
@@ -69,7 +101,7 @@ const PartsList = (props) => {
       supplier_id: "",
     });
     //Atidarome detales redagavimo forma
-    setEditPartForm(true)
+    setEditPartForm(true);
   };
 
   //Atidarome naujos detales forma pakeiciant state
@@ -79,24 +111,43 @@ const PartsList = (props) => {
   const hideAddPartHandler = () => setAddPartForm(false);
 
   //Paslepiame detales redagavimo forma
-  const hideEditPartFormHandler = ()=>setEditPartForm(false);
- 
+  const hideEditPartFormHandler = () => setEditPartForm(false);
+  const [value,setValue] = useState()
+  
 
   return (
     <>
-    {/* Redagavimo formos valdymas ir duomenu persiuntimas */}
-       {
-          (editPartForm)?<EditPart editPartData={editPart} updatePartData={updatePartHandler} hideEditPart={hideEditPartFormHandler} />
-       : null}
+      {/* Redagavimo formos valdymas ir duomenu persiuntimas */}
+      {editPartForm ? (
+        <EditPart
+          editPartData={editPart}
+          updatePartData={updatePartHandler}
+          hideEditPart={hideEditPartFormHandler}
+        />
+      ) : null}
 
-{/* Naujos detales ivedimo form */}
-      {addPartForm ? <AddPart hideAddPart={hideAddPartHandler} newPart={addPartsHandler} /> : null}
+      {/* Naujos detales ivedimo form */}
+      {addPartForm ? (
+        <AddPart hideAddPart={hideAddPartHandler} newPart={addPartsHandler} />
+      ) : null}
+
       {/* Parodome detales istrynimo Modala */}
-      {(show)?<DeleteForm show={show} delModalClose={handleClose}/>:null}
+      {showDelModal ? (
+        <DeleteForm
+          show={showDelModal}
+          delModalClose={handleDelModalClose}
+          delPartFromServer={delPartHandler}
+        />
+      ) : null}
 
-      <Card className="mt-1" >      
-        <div >
-          <Button variant="success" onClick={addPartHandler} className="m-1" title="Pridėti detalę">
+      <Card className="mt-1">
+        <div>
+          <Button
+            variant="success"
+            onClick={addPartHandler}
+            className="m-1"
+            title="Pridėti detalę"
+          >
             +
           </Button>
         </div>
@@ -117,7 +168,26 @@ const PartsList = (props) => {
           <tr>
             <th>#</th>
             <th>
-              <Filter />
+              <InputGroup>
+                <Form.Control
+                  type="text"
+                  placeholder="Filtras..."
+                  className="border"
+                  name="1"
+                  valu={value}
+                  onKeyPress={filterHandler}
+                  
+                ></Form.Control>
+                <Button
+                  className="border"
+                  variant="outline-secondary"
+                  title="Panikinti filtrą"
+                  size="sm"
+                 
+                >
+                  x
+                </Button>{" "}
+              </InputGroup>
             </th>
             <th>
               <Filter />
@@ -145,15 +215,12 @@ const PartsList = (props) => {
               description={p.description}
               brand={p.main_producer_id}
               supplier={p.supplier_id}
-              delPart={handleShow}
+              delPartForm={handleDelModalShow} //Parodome papildoma dleete uzklausa ir savyje nesame id
               editPart={editPartDataHandler}
-              
             />
           ))}
         </tbody>
       </Table>
-
-      
     </>
   );
 };

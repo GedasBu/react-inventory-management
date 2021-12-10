@@ -1,18 +1,26 @@
-import { InputGroup, Button } from "react-bootstrap";
+import { InputGroup, Button, Form } from "react-bootstrap";
+import {useState} from "react"
 
 const Filter = () => {
+  
+
+ 
   return (
     <InputGroup>
-      <input type="text" placeholder="Filtras..." className="border"></input>
+      <Form.Control
+        type="text"
+        placeholder="Filtras..."
+        className="border"
+        
+      ></Form.Control>
       <Button
         className="border"
         variant="outline-secondary"
-        title="Panikinti filtrą"
+         title="Panikinti filtrą"
         size="sm"
       >
         x
       </Button>{" "}
-     
     </InputGroup>
   );
 };
