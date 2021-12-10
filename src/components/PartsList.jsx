@@ -1,20 +1,49 @@
-import { Table, Button, Card, Row, InputGroup, FormControl} from "react-bootstrap";
+import {
+  Table,
+  Button,
+  Card,
+  Row,
+  InputGroup,
+  FormControl,
+} from "react-bootstrap";
 import PartsItem from "./PartsItem";
 import axios from "axios";
 import EditPart from "./EditPart";
 import { useState } from "react";
 import { AddPart } from "./AddPart";
+import Filter from "./Filter";
+import DeleteForm from "./DeleteForm"
 
 const PartsList = (props) => {
   const [editPart, setEditPart] = useState({});
-  const [addPart, setAddPart] = useState(false);
+  const [addPartForm, setAddPartForm] = useState(false);
+  const [editPartForm, setEditPartForm] = useState(false);
+  const [show, setShow] = useState(false);
+      
+  const handleClose = () => {
+    setShow(false);
+  console.log(show);
+  
+  
+  
+    }
+      const handleShow = () => setShow(true);
+  console.log(show)
+  
+  // Pridedame nauja irasa i duombaze. Siunciam uzklausa ir serveri
+  const addPartsHandler = (data) => {
+    axios.post("http://localhost:3003/parts/add", data).then((res) => {
+    props.partsUpdate(Date.now());
+  });
+};
 
   // Triname irasa is duomenu bazes. Siunciame uzklausa i serveri
 
   const delPartHandler = (id) => {
-    axios.delete("http://localhost:3003/parts/delete/" + id).then((res) => {
-      props.partsUpdate(Date.now());
-    });
+    // axios.delete("http://localhost:3003/parts/delete/" + id).then((res) => {
+    //   props.partsUpdate(Date.now());
+    // });
+
   };
 
   //Atnaujiname irasa duomenu bazeje. Siunciame uzklausa i serveri.
@@ -28,6 +57,8 @@ const PartsList = (props) => {
     setEditPart({});
   };
 
+
+// Irasome redaguojamos prekes esamas reiksmes i state ir atiodarome detales redagavimo forma
   const editPartDataHandler = (id, partNumber, partNumber2, description) => {
     setEditPart({
       id: id,
@@ -37,21 +68,35 @@ const PartsList = (props) => {
       main_producer_id: "",
       supplier_id: "",
     });
+    //Atidarome detales redagavimo forma
+    setEditPartForm(true)
   };
-  const addPartHandler = () => setAddPart(true);
-  const hideAddPartHandler = () => setAddPart(false);
+
+  //Atidarome naujos detales forma pakeiciant state
+  const addPartHandler = () => setAddPartForm(true);
+
+  //Paslepiame naujos detales ivedimo forma
+  const hideAddPartHandler = () => setAddPartForm(false);
+
+  //Paslepiame detales redagavimo forma
+  const hideEditPartFormHandler = ()=>setEditPartForm(false);
+ 
 
   return (
     <>
-      {Object.keys(editPart).length !== 0 ? (
-        <EditPart editPartData={editPart} updatePartData={updatePartHandler} />
-      ) : null}
+    {/* Redagavimo formos valdymas ir duomenu persiuntimas */}
+       {
+          (editPartForm)?<EditPart editPartData={editPart} updatePartData={updatePartHandler} hideEditPart={hideEditPartFormHandler} />
+       : null}
 
-      {addPart ? <AddPart hideAddPart={hideAddPartHandler} /> : null}
+{/* Naujos detales ivedimo form */}
+      {addPartForm ? <AddPart hideAddPart={hideAddPartHandler} newPart={addPartsHandler} /> : null}
+      {/* Parodome detales istrynimo Modala */}
+      {(show)?<DeleteForm show={show} delModalClose={handleClose}/>:null}
 
-      <Card>
-        <div className="button">
-          <Button variant="primary" onClick={addPartHandler} className="m-1">
+      <Card className="mt-1" >      
+        <div >
+          <Button variant="success" onClick={addPartHandler} className="m-1" title="Pridėti detalę">
             +
           </Button>
         </div>
@@ -72,40 +117,19 @@ const PartsList = (props) => {
           <tr>
             <th>#</th>
             <th>
-              <div>
-              <InputGroup >
-              <input type="text" placeholder="Filtras..." className="border"></input>             
-              <Button className="border"
-                  variant="outline-secondary"
-                  title="Panikinti filtrą"
-                  size="sm"
-                >
-                  x
-                </Button>{" "}
-              </InputGroup>
-              </div>
+              <Filter />
             </th>
             <th>
-            <InputGroup >
-              <input type="text" placeholder="Filtras..." className="border"></input>             
-              <Button className="border"
-                  variant="outline-secondary"
-                  title="Panikinti filtrą"
-                  size="sm"
-                >
-                  x
-                </Button>{" "}
-              </InputGroup>
-              
+              <Filter />
             </th>
             <th>
-              <input type="text" placeholder="Filtras..."></input>
+              <Filter />
             </th>
             <th>
-              <input type="text" placeholder="Filtras..."></input>
+              <Filter />
             </th>
             <th>
-              <input type="text" placeholder="Filtras..."></input>
+              <Filter />
             </th>
             <th></th>
             <th></th>
@@ -121,12 +145,15 @@ const PartsList = (props) => {
               description={p.description}
               brand={p.main_producer_id}
               supplier={p.supplier_id}
-              delPart={delPartHandler}
+              delPart={handleShow}
               editPart={editPartDataHandler}
+              
             />
           ))}
         </tbody>
       </Table>
+
+      
     </>
   );
 };

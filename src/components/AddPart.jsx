@@ -1,8 +1,6 @@
 import { Form, Card, Row, Col, Button } from "react-bootstrap";
 import { useState } from "react";
 
-
-
 export const AddPart = (props) => {
   const [data, setData] = useState({
     part_number: "",
@@ -18,7 +16,7 @@ export const AddPart = (props) => {
   const onSubmit = (e) => {
     e.preventDefault();
     props.newPart(data);
-    // hideWork();
+    props.hideAddPart();
   };
 
   return (
@@ -35,7 +33,7 @@ export const AddPart = (props) => {
                 value={data.part_number}
                 onChange={handleChange}
               />
-            
+
               <Form.Label>Numeris2</Form.Label>
               <Form.Control
                 type="text"
@@ -46,7 +44,6 @@ export const AddPart = (props) => {
               <br />
             </Form.Group>
 
-           
             <Form.Group>
               <Form.Label>Pavadinimas</Form.Label>
               <Form.Control
@@ -83,7 +80,9 @@ export const AddPart = (props) => {
               <Button variant="primary" type="submit">
                 Saugoti
               </Button>{" "}
-              <Button variant="danger" onClick={props.hideAddPart}>Atšaukti</Button>
+              <Button variant="danger" onClick={props.hideAddPart}>
+                Atšaukti
+              </Button>
             </Form.Group>
           </Form>
         </Card.Body>

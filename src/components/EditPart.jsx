@@ -1,21 +1,18 @@
 import { Form, Card, Row, Col, Button } from "react-bootstrap";
 import { useState } from "react";
 
-
-
 const EditPart = (props) => {
- 
-  const [data, setData] = useState( 
-   props.editPartData //Priskiriame is PartsList gautus duomins apie redaguojama detale
+  const [data, setData] = useState(
+    props.editPartData //Priskiriame is PartsList gautus duomins apie redaguojama detale
   );
 
- const handleChange = (e) => {
+  const handleChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
   };
   const onSubmit = (e) => {
     e.preventDefault();
     props.updatePartData(data);
-    // hideWork();
+    props.hideEditPart();
   };
 
   return (
@@ -32,7 +29,7 @@ const EditPart = (props) => {
                 value={data.part_number}
                 onChange={handleChange}
               />
-            
+
               <Form.Label>Numeris2</Form.Label>
               <Form.Control
                 type="text"
@@ -43,7 +40,6 @@ const EditPart = (props) => {
               <br />
             </Form.Group>
 
-           
             <Form.Group>
               <Form.Label>Pavadinimas</Form.Label>
               <Form.Control
@@ -77,10 +73,12 @@ const EditPart = (props) => {
 
             <Form.Group>
               <br />
-              <Button variant="primary" type="submit">
+              <Button variant="primary" type="submit ">
                 Saugoti
               </Button>{" "}
-              <Button variant="danger">Atšaukti</Button>
+              <Button variant="danger" onClick={props.hideEditPart}>
+                Atšaukti
+              </Button>
             </Form.Group>
           </Form>
         </Card.Body>
@@ -89,4 +87,4 @@ const EditPart = (props) => {
   );
 };
 
-export default EditPart
+export default EditPart;
