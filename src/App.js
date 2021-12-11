@@ -14,11 +14,10 @@ function App(props) {
 
    // Filtras serveryje
    const serverFilter = filter =>{
-     console.log(filter)
+     console.log('filter',filter)
     axios.get(`http://localhost:3003/parts/filter/${filter.f_value}/${filter.f_name}`).then((res) => {
       
-      setParts(res.data.parts)
-     
+      setParts(res.data.parts)  
           
 
     });
@@ -34,10 +33,6 @@ function App(props) {
 
   return (
     <>
-    {/* <div>
-<div>
-       
-      </div> */}
 <h1>React Order Management...</h1>
       <Container fluid className="border">
         

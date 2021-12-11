@@ -1,16 +1,42 @@
 import { InputGroup, Button, Form } from "react-bootstrap";
-import {useState} from "react"
+import {useEffect, useState} from "react"
 
-const Filter = () => {
+const Filter = (props) => {
+
+const [filterFiledText,setFilterFieldText]=useState("")
+const set =(e)=>{
+  setFilterFieldText(e.target.value)  
   
+}
+// Siunciame duomenis i PartsList duombazes uzklausai. 
+useEffect(() => {
+  props.filterFieldData("a",filterFiledText,props.fltrNumber) 
+}, [filterFiledText]);
 
+// Tikrinama ar paspaudtas Enter ir paliedziama funkcija PartsList componenete
+const sendInputValue =(ev)=>{
+  if(ev.key ==='Enter'){
+   props.sentToServer()
+  }
  
-  return (
-    <InputGroup>
+
+}
+// Mygtuko paglaba isvalome filtra
+const resetFilter =()=>{
+  setFilterFieldText('')
+ 
+}
+
+
+  return (    
+       <InputGroup>
       <Form.Control
         type="text"
         placeholder="Filtras..."
         className="border"
+        value={filterFiledText}
+        onChange={set}
+        onKeyPress={sendInputValue}
         
       ></Form.Control>
       <Button
@@ -18,10 +44,13 @@ const Filter = () => {
         variant="outline-secondary"
          title="Panikinti filtrą"
         size="sm"
+        onClick={resetFilter}
       >
         x
       </Button>{" "}
     </InputGroup>
+   
+   
   );
 };
 

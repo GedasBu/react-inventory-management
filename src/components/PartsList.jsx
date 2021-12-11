@@ -2,9 +2,7 @@ import {
   Table,
   Button,
   Card,
-  Form,
-  InputGroup,
-  FormControl,
+    
 } from "react-bootstrap";
 import PartsItem from "./PartsItem";
 import axios from "axios";
@@ -21,26 +19,18 @@ const PartsList = (props) => {
   const [editPartForm, setEditPartForm] = useState(false);
   const [showDelModal, setshowDelModal] = useState(false);
   const [delPartId, setDelPartId] = useState();
-
   const [filterValue, setFilterValue] = useState({
     f_name:'',
     f_value:''
-  });
+  }); 
 
-  const filterHandler= (e)=>{   
-      if (e.key === "Enter") {
-        e.preventDefault();
-        // setFilterValue({...filterValue,f_name:e.target.name,
-        //   f_value: e.target.value})
-          props.serverFilter({f_name:e.target.name,f_value: e.target.value});  
-        } 
-       
-      // console.log(filterValue)      
-  };
- 
-
- 
-
+  // //Filtras serverio puseje
+  // const serverFilter = (filterData) => {
+  //   axios.get("http://localhost:3003/dominos/filter/"+filterData).then((res) => {
+  //     setPlates(res.data.dominos.map(p=>({id:p.id,left:p.left_side,right:p.right_side})));
+  //   });
+  //   console.log('filtered data',filterData)
+  // };
 
   const handleDelModalClose = () => {
     setshowDelModal(false);
@@ -67,13 +57,6 @@ const PartsList = (props) => {
       .then((res) => {
         props.partsUpdate(Date.now());
       });
-
-    //Filtras serverio puseje
-    const serverFilter = (filter) => {
-      // axios.get("http://localhost:3003/dominos/filter/"+filter).then((res) => {
-      //   setPlates(res.data.dominos.map(p=>({id:p.id,left:p.left_side,right:p.right_side})));
-      // });
-    };
 
     //Uždarome delete issokanti langa
     setshowDelModal(false);
@@ -112,8 +95,23 @@ const PartsList = (props) => {
 
   //Paslepiame detales redagavimo forma
   const hideEditPartFormHandler = () => setEditPartForm(false);
-  const [value,setValue] = useState()
   
+//Tikriname ar buvo paspaustas Enter mygtukas filtre ir priskiriame reiksme statui.
+ const filterDataHandler=(key,fltrValue,fltrNumber)=>{
+     
+  if(fltrNumber===1) {    
+      setFilterValue({...filterValue, f_name:fltrNumber, f_value:fltrValue})
+    
+
+  } 
+
+ 
+}
+
+const sentToServer =()=>{
+    props.serverFilter(filterValue)
+  }
+
 
   return (
     <>
@@ -168,38 +166,19 @@ const PartsList = (props) => {
           <tr>
             <th>#</th>
             <th>
-              <InputGroup>
-                <Form.Control
-                  type="text"
-                  placeholder="Filtras..."
-                  className="border"
-                  name="1"
-                  valu={value}
-                  onKeyPress={filterHandler}
-                  
-                ></Form.Control>
-                <Button
-                  className="border"
-                  variant="outline-secondary"
-                  title="Panikinti filtrą"
-                  size="sm"
-                 
-                >
-                  x
-                </Button>{" "}
-              </InputGroup>
+            <Filter fltrNumber={1} filterFieldData={filterDataHandler} sentToServer={sentToServer}/>
             </th>
             <th>
-              <Filter />
+              <Filter fltrNumber={2} filterFieldData={filterDataHandler}/>
             </th>
             <th>
-              <Filter />
+              <Filter fltrNumber={3} filterFieldData={filterDataHandler}/>
             </th>
             <th>
-              <Filter />
+            <Filter fltrNumber={4} filterFieldData={filterDataHandler}/>
             </th>
             <th>
-              <Filter />
+            <Filter fltrNumber={5} filterFieldData={filterDataHandler}/>
             </th>
             <th></th>
             <th></th>

@@ -58,6 +58,7 @@ app.post("/parts/add", (req, res) => {
     [req.body.part_number, req.body.part_number_1, req.body.description],
     (err) => {
       if (err) throw err;
+      console.log(req.body);
       console.log("1 record inserted");
     }
   );
