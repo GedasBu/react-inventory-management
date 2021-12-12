@@ -28,3 +28,7 @@ code {
 .func_button{
   width: 10px
 }
+.nav-link:hover{
+  background-color: rgba(0, 0, 0, 0.075);
+
+}

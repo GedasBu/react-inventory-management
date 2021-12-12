@@ -12,7 +12,7 @@ const PartsItem = (props) => {
   };
 
   return (
-    <tr className="align-middle">
+    <tr className="align-middle" onDoubleClick={getEditIdHandler}>
       <td>{props.id}</td>
       <td>{props.number}</td>
       <td>{props.number2}</td>

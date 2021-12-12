@@ -1,13 +1,14 @@
 import { Nav, Row } from "react-bootstrap";
+import {Link} from "react-router-dom"
 
 const SideNav = () => {
   return (
     <Nav defaultActiveKey="/home" className="flex-column ">
       <Row className="border-bottom ">
-        <Nav.Link href="/home" className="text-dark hover">Dalys</Nav.Link>
+        <Nav.Link href="/parts" className="text-dark hover" to="/parts">Dalys</Nav.Link>
       </Row>
       <Row className="border-bottom ">
-        <Nav.Link eventKey="link-1" className="text-dark">
+        <Nav.Link href="/brands" eventKey="/brands" className="text-dark" to="/brands">
           Markės
         </Nav.Link>
       </Row>
