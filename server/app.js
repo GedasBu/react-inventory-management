@@ -50,12 +50,12 @@ app.post("/parts/add", (req, res) => {
   const sql = `
         INSERT INTO
         parts
-        (part_number, part_number_1,description)
-        VALUES (?,?,?)
+        (part_number, part_number_1,description,brand_name,producer_name)
+        VALUES (?,?,?,?,?)
     `;
   con.query(
     sql,
-    [req.body.part_number, req.body.part_number_1, req.body.description],
+    [req.body.part_number, req.body.part_number_1, req.body.description, req.body.brand_name, req.body.producer_name],
     (err) => {
       if (err) throw err;
       console.log(req.body);
@@ -84,7 +84,7 @@ app.delete("/parts/delete/:id", (req, res) => {
 app.put("/parts/update/:id", (req, res) => {
   const sql = `
         UPDATE parts
-  SET part_number = ?, part_number_1=?, description=?
+  SET part_number = ?, part_number_1=?, description=?, brand_name=?, producer_name=?
   WHERE id=? 
       `;
   con.query(
@@ -93,15 +93,19 @@ app.put("/parts/update/:id", (req, res) => {
       req.body.part_number,
       req.body.part_number_1,
       req.body.description,
-      req.params.id,
+      req.body.brand_name,
+      req.body.producer_name,
+      req.params.id
+      
     ],
-    (err) => {
+    (err,res) => {
       if (err) throw err;
+      console.log(res.message)
       console.log("1 record updated");
     }
   );
   res.json({
-    msg: "OKi",
+    msg: `${res.message}`,
   });
 });
 
@@ -113,7 +117,13 @@ app.get("/parts/filter/:f_value/:f_name", (req, res) => {
   let filterSQL = "";
   switch (req.params.f_name) {
     case "1":
-      filterSQL = `WHERE part_number= ${req.params.f_value}`;
+      filterSQL = `WHERE part_number LIKE '%${req.params.f_value}%'`;
+      break;
+    case "2":
+      filterSQL = `WHERE part_number_1 LIKE '%${req.params.f_value}%'`;
+      break;
+    case "3":
+      filterSQL = `WHERE description LIKE '%${req.params.f_value}%'`;
       break;
    
   }

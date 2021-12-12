@@ -19,10 +19,7 @@ const PartsList = (props) => {
   const [editPartForm, setEditPartForm] = useState(false);
   const [showDelModal, setshowDelModal] = useState(false);
   const [delPartId, setDelPartId] = useState();
-  const [filterValue, setFilterValue] = useState({
-    f_name:'',
-    f_value:''
-  }); 
+  const [filterValue, setFilterValue] = useState({f_name:'', f_value:'' }); 
 
   // //Filtras serverio puseje
   // const serverFilter = (filterData) => {
@@ -44,7 +41,7 @@ const PartsList = (props) => {
 
   // Pridedame nauja irasa i duombaze. Siunciam uzklausa ir serveri
   const addPartsHandler = (data) => {
-    axios.post("http://localhost:3003/parts/add", data).then((res) => {
+   axios.post("http://localhost:3003/parts/add", data).then((res) => {
       props.partsUpdate(Date.now());
     });
   };
@@ -65,6 +62,7 @@ const PartsList = (props) => {
   //Atnaujiname irasa duomenu bazeje. Siunciame uzklausa i serveri.
 
   const updatePartHandler = (data) => {
+    console.log(data.id)
     axios
       .put("http://localhost:3003/parts/update/" + data.id, data)
       .then((res) => {
@@ -73,15 +71,15 @@ const PartsList = (props) => {
     setEditPart({});
   };
 
-  // Irasome redaguojamos prekes esamas reiksmes i state ir atiodarome detales redagavimo forma
-  const editPartDataHandler = (id, partNumber, partNumber2, description) => {
+  // Irasome redaguojamos prekes esamas reiksmes i state ir atidarome detales redagavimo forma
+  const editPartDataHandler = (id, partNumber, partNumber2, description, brand, producer) => {
     setEditPart({
       id: id,
       part_number: partNumber,
       part_number_1: partNumber2,
       description: description,
-      main_producer_id: "",
-      supplier_id: "",
+      brand_name: brand,
+      producer_name: producer,
     });
     //Atidarome detales redagavimo forma
     setEditPartForm(true);
@@ -97,13 +95,20 @@ const PartsList = (props) => {
   const hideEditPartFormHandler = () => setEditPartForm(false);
   
 //Tikriname ar buvo paspaustas Enter mygtukas filtre ir priskiriame reiksme statui.
- const filterDataHandler=(key,fltrValue,fltrNumber)=>{
+ const filterDataHandler=(fltrValue,fltrNumber)=>{
      
   if(fltrNumber===1) {    
       setFilterValue({...filterValue, f_name:fltrNumber, f_value:fltrValue})
-    
+  } else 
+  if(fltrNumber===2) {    
+    setFilterValue({...filterValue, f_name:fltrNumber, f_value:fltrValue})
+  } else
+  if(fltrNumber===3) {    
+    setFilterValue({...filterValue, f_name:fltrNumber, f_value:fltrValue})
+  } else {
 
-  } 
+    console.log('Sio filtro nera sarase')
+  }
 
  
 }
@@ -121,12 +126,13 @@ const sentToServer =()=>{
           editPartData={editPart}
           updatePartData={updatePartHandler}
           hideEditPart={hideEditPartFormHandler}
+          showEditForm={editPartForm}
         />
       ) : null}
 
       {/* Naujos detales ivedimo form */}
       {addPartForm ? (
-        <AddPart hideAddPart={hideAddPartHandler} newPart={addPartsHandler} />
+        <AddPart hideAddPart={hideAddPartHandler} newPart={addPartsHandler} partsUpdate={props.partsUpdate} showAddPartForm={addPartForm}/>
       ) : null}
 
       {/* Parodome detales istrynimo Modala */}
@@ -138,8 +144,9 @@ const sentToServer =()=>{
         />
       ) : null}
 
-      <Card className="mt-1">
-        <div>
+      <Card className="mt-1 border-bottom-0 rounded-0 bg-light">
+      <Card.Header as="h5">Prekės</Card.Header>
+     <div>         
           <Button
             variant="success"
             onClick={addPartHandler}
@@ -148,37 +155,37 @@ const sentToServer =()=>{
           >
             +
           </Button>
-        </div>
+      </div>
       </Card>
 
-      <Table striped bordered hover size="sm" responsive>
-        <thead>
-          <tr>
-            <th className="justify-content-center">Id</th>
-            <th>Numeris</th>
-            <th>Numeris 2</th>
+      <Table  bordered hover size="sm" responsive>
+        <thead >
+          <tr className="align-middle border-bottom-0 bg-light">
+            <th className="id">Id</th>
+            <th className="th1" >Numeris</th>
+            <th className="th1">Numeris 2</th>
             <th>Pavadinimas</th>
-            <th>Markė</th>
-            <th>Gamintojas</th>
-            <th></th>
-            <th></th>
+            <th className="th1">Markė</th>
+            <th className="th1">Gamintojas</th>
+            <th className="func_button" ></th>
+            <th className="func_button"></th>
           </tr>
-          <tr>
+          <tr className="align-middle bg-light">
             <th>#</th>
             <th>
-            <Filter fltrNumber={1} filterFieldData={filterDataHandler} sentToServer={sentToServer}/>
+            <Filter fltrNumber={1} filterFieldData={filterDataHandler} sentToServer={sentToServer} partsUpdate={props.partsUpdate}/>
             </th>
             <th>
-              <Filter fltrNumber={2} filterFieldData={filterDataHandler}/>
+              <Filter fltrNumber={2} filterFieldData={filterDataHandler} sentToServer={sentToServer} partsUpdate={props.partsUpdate}/>
             </th>
             <th>
-              <Filter fltrNumber={3} filterFieldData={filterDataHandler}/>
+              <Filter fltrNumber={3} filterFieldData={filterDataHandler} sentToServer={sentToServer} partsUpdate={props.partsUpdate}/>
             </th>
             <th>
-            <Filter fltrNumber={4} filterFieldData={filterDataHandler}/>
+            <Filter fltrNumber={4} filterFieldData={filterDataHandler} sentToServer={sentToServer} partsUpdate={props.partsUpdate}/>
             </th>
             <th>
-            <Filter fltrNumber={5} filterFieldData={filterDataHandler}/>
+            <Filter fltrNumber={5} filterFieldData={filterDataHandler} sentToServer={sentToServer} partsUpdate={props.partsUpdate}/>
             </th>
             <th></th>
             <th></th>
@@ -192,8 +199,8 @@ const sentToServer =()=>{
               number={p.part_number}
               number2={p.part_number_1}
               description={p.description}
-              brand={p.main_producer_id}
-              supplier={p.supplier_id}
+              brand={p.brand_name}
+              producer={p.producer_name}
               delPartForm={handleDelModalShow} //Parodome papildoma dleete uzklausa ir savyje nesame id
               editPart={editPartDataHandler}
             />

@@ -1,4 +1,4 @@
-import { Form, Card, Row, Col, Button } from "react-bootstrap";
+import { Form, Card, Row, Col, Button, Modal } from "react-bootstrap";
 import { useState } from "react";
 
 const EditPart = (props) => {
@@ -9,6 +9,7 @@ const EditPart = (props) => {
   const handleChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
   };
+
   const onSubmit = (e) => {
     e.preventDefault();
     props.updatePartData(data);
@@ -17,10 +18,14 @@ const EditPart = (props) => {
 
   return (
     <>
-      <Card>
-        <Card.Header>Redaguoti prekę</Card.Header>
-        <Card.Body>
-          <Form onSubmit={onSubmit}>
+      <Modal show={props.showEditForm}>
+        <Modal.Header>
+          <Modal.Title id="contained-modal-title-vcenter">
+            Redaguoti prekę
+          </Modal.Title>
+        </Modal.Header>
+        <Form onSubmit={onSubmit}>
+          <Modal.Body>
             <Form.Group>
               <Form.Label>Numeris</Form.Label>
               <Form.Control
@@ -37,10 +42,7 @@ const EditPart = (props) => {
                 value={data.part_number_1}
                 onChange={handleChange}
               />
-              <br />
-            </Form.Group>
 
-            <Form.Group>
               <Form.Label>Pavadinimas</Form.Label>
               <Form.Control
                 type="text"
@@ -48,41 +50,36 @@ const EditPart = (props) => {
                 value={data.description}
                 onChange={handleChange}
               />
-              <br />
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>Markė</Form.Label>
-              <Form.Control
-                type="text"
-                name="main_producer_id"
-                value={data.main_producer_id}
-                onChange={handleChange}
-              />
-              <br />
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>Markė</Form.Label>
-              <Form.Control
-                type="text"
-                name="supplier_id"
-                value={data.supplier_id}
-                onChange={handleChange}
-              />
-              <br />
-            </Form.Group>
 
-            <Form.Group>
-              <br />
-              <Button variant="primary" type="submit ">
-                Saugoti
-              </Button>{" "}
-              <Button variant="danger" onClick={props.hideEditPart}>
-                Atšaukti
-              </Button>
+              <Form.Label>Markė</Form.Label>
+              <Form.Control
+                type="text"
+                name="brand_name"
+                value={data.brand_name}
+                onChange={handleChange}
+              />
+
+              <Form.Label>Gamintojas</Form.Label>
+              <Form.Control
+                type="text"
+                name="producer_name"
+                value={data.producer_name}
+                onChange={handleChange}
+              />
             </Form.Group>
-          </Form>
-        </Card.Body>
-      </Card>
+          </Modal.Body>
+          <Modal.Footer>
+            <br />
+            <Button variant="success" type="submit ">
+              Atnaujinti
+            </Button>{" "}
+            <Button variant="danger" onClick={props.hideEditPart}>
+              Atšaukti
+            </Button>
+          </Modal.Footer>
+        </Form>
+      </Modal>
+      
     </>
   );
 };

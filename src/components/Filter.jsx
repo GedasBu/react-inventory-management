@@ -1,56 +1,48 @@
 import { InputGroup, Button, Form } from "react-bootstrap";
-import {useEffect, useState} from "react"
+import { useEffect, useState } from "react";
 
 const Filter = (props) => {
+  const [filterFieldText, setFilterFieldText] = useState("");
+  const set = (e) => {
+    setFilterFieldText(e.target.value);
+  };
+  // Siunciame duomenis i PartsList duombazes uzklausai.
+  useEffect(() => {
+    props.filterFieldData(filterFieldText, props.fltrNumber);
+  }, [filterFieldText]);
 
-const [filterFiledText,setFilterFieldText]=useState("")
-const set =(e)=>{
-  setFilterFieldText(e.target.value)  
-  
-}
-// Siunciame duomenis i PartsList duombazes uzklausai. 
-useEffect(() => {
-  props.filterFieldData("a",filterFiledText,props.fltrNumber) 
-}, [filterFiledText]);
+  // Tikrinama ar paspaudtas Enter ir paliedziama funkcija PartsList componenete
+  const sendInputValue = (ev) => {
+    if (ev.key === "Enter") {
+      props.sentToServer();
+    }
+  };
+  // Mygtuko paglaba isvalome filtra ir atnaujiname daliu sarasa
+  const resetFilter = () => {
+    setFilterFieldText("");
+    props.partsUpdate(Date.now());
+  };
 
-// Tikrinama ar paspaudtas Enter ir paliedziama funkcija PartsList componenete
-const sendInputValue =(ev)=>{
-  if(ev.key ==='Enter'){
-   props.sentToServer()
-  }
- 
-
-}
-// Mygtuko paglaba isvalome filtra
-const resetFilter =()=>{
-  setFilterFieldText('')
- 
-}
-
-
-  return (    
-       <InputGroup>
+  return (
+    <InputGroup size="sm">
       <Form.Control
         type="text"
-        placeholder="Filtras..."
+        placeholder="Filtruoti..."
         className="border"
-        value={filterFiledText}
+        value={filterFieldText}
         onChange={set}
         onKeyPress={sendInputValue}
-        
       ></Form.Control>
       <Button
-        className="border"
+        className="border bg-white"
         variant="outline-secondary"
-         title="Panikinti filtrą"
+        title="Panikinti filtrą"
         size="sm"
         onClick={resetFilter}
       >
         x
       </Button>{" "}
     </InputGroup>
-   
-   
   );
 };
 
