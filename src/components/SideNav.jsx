@@ -1,5 +1,5 @@
 import { Nav, Row } from "react-bootstrap";
-import {Link} from "react-router-dom"
+
 
 const SideNav = () => {
   return (
@@ -29,6 +29,9 @@ const SideNav = () => {
       </Row>
       <Row className="border-bottom">
         <Nav.Link eventKey="link-2" className="text-dark">TK Užsakymai</Nav.Link>
+      </Row>
+      <Row className="border-bottom">
+        <Nav.Link href="/nox"eventKey="link-2"className="text-dark">NOx registras</Nav.Link>
       </Row>
       <Row className="border-bottom">
         <Nav.Link eventKey="link-2"className="text-dark">...</Nav.Link>

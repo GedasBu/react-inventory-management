@@ -1,4 +1,4 @@
-import { Form, Card, Button, Modal } from "react-bootstrap";
+import { Form, Button, Modal,Row,Col } from "react-bootstrap";
 import { useState } from "react";
 
 export const AddPart = (props) => {
@@ -15,13 +15,18 @@ export const AddPart = (props) => {
   };
   const onSubmit = (e) => {
     e.preventDefault();
+    console.log(data)
+    if(data.part_number.trim().length === 0 || data.description.trim().length === 0 || data.producer_name.trim().length === 0){
+      return;
+    }
+    
     props.newPart(data);
     props.hideAddPart();
   };
 
   return (
     <>
-      <Modal show={props.showAddPartForm}>
+      <Modal show={props.showAddPartForm} onHide={props.hideAddPart}>
         <Modal.Header>
           <Modal.Title id="contained-modal-title-vcenter">
             Pridėti prekę
@@ -30,13 +35,15 @@ export const AddPart = (props) => {
         <Form onSubmit={onSubmit}>
           <Modal.Body>
             <Form.Group>
-              <Form.Label>Numeris</Form.Label>
+              <Form.Label>Numeris*</Form.Label>
               <Form.Control
                 type="text"
                 name="part_number"
                 value={data.part_number}
                 onChange={handleChange}
               />
+              </Form.Group>
+              <Form.Group>
               <Form.Label>Numeris2</Form.Label>
               <Form.Control
                 type="text"
@@ -44,7 +51,9 @@ export const AddPart = (props) => {
                 value={data.part_number_1}
                 onChange={handleChange}
               />
-              <Form.Label>Pavadinimas</Form.Label>
+              </Form.Group>
+              <Form.Group>
+              <Form.Label>Pavadinimas*</Form.Label>
               <Form.Control
                 type="text"
                 name="description"
@@ -52,6 +61,9 @@ export const AddPart = (props) => {
                 onChange={handleChange}
               />
             </Form.Group>
+
+        <Row>
+          <Col md>
             <Form.Group>
               <Form.Label>Markė</Form.Label>
               <Form.Control
@@ -60,7 +72,11 @@ export const AddPart = (props) => {
                 value={data.brand_name}
                 onChange={handleChange}
               />
-              <Form.Label>Gamintojas</Form.Label>
+            </Form.Group>
+          </Col>
+          <Col  md>
+            <Form.Group>
+              <Form.Label>Gamintojas*</Form.Label>
               <Form.Control
                 type="text"
                 name="producer_name"
@@ -68,6 +84,9 @@ export const AddPart = (props) => {
                 onChange={handleChange}
               />
             </Form.Group>
+          </Col>
+        </Row>
+
           </Modal.Body>
           <Modal.Footer>
             <br />

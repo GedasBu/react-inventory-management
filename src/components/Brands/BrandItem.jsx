@@ -1,7 +1,7 @@
 import { Button } from "react-bootstrap";
 import { MdDeleteForever, MdEdit } from "react-icons/md";
 
-const PartsItem = (props) => {
+const BrandItem = (props) => {
   const getDeleteIdHandler = () => {
     
     //Siunciame Id i PartsList
@@ -14,12 +14,8 @@ const PartsItem = (props) => {
   return (
     <tr className="align-middle" onDoubleClick={getEditIdHandler}>
       <td>{props.id}</td>
-      <td>{props.number}</td>
-      <td>{props.number2}</td>
-      <td>{props.description}</td>
-      <td>{props.brand}</td>
-      <td>{props.producer}</td>
-      <td className="text-center">
+      <td>{props.name}</td>
+     <td className="text-center">
         <a href="#/" onClick={getEditIdHandler} >
           <Button variant="primary">          
             <MdEdit />
@@ -37,4 +33,4 @@ const PartsItem = (props) => {
   );
 };
 
-export default PartsItem;
+export default BrandItem;

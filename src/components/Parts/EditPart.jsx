@@ -1,4 +1,4 @@
-import { Form, Card, Row, Col, Button, Modal } from "react-bootstrap";
+import { Form, Button, Modal } from "react-bootstrap";
 import { useState } from "react";
 
 const EditPart = (props) => {

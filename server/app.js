@@ -55,7 +55,13 @@ app.post("/parts/add", (req, res) => {
     `;
   con.query(
     sql,
-    [req.body.part_number, req.body.part_number_1, req.body.description, req.body.brand_name, req.body.producer_name],
+    [
+      req.body.part_number,
+      req.body.part_number_1,
+      req.body.description,
+      req.body.brand_name,
+      req.body.producer_name,
+    ],
     (err) => {
       if (err) throw err;
       console.log(req.body);
@@ -95,12 +101,11 @@ app.put("/parts/update/:id", (req, res) => {
       req.body.description,
       req.body.brand_name,
       req.body.producer_name,
-      req.params.id
-      
+      req.params.id,
     ],
-    (err,res) => {
+    (err, res) => {
       if (err) throw err;
-      console.log(res.message)
+      console.log(res.message);
       console.log("1 record updated");
     }
   );
@@ -125,16 +130,39 @@ app.get("/parts/filter/:f_value/:f_name", (req, res) => {
     case "3":
       filterSQL = `WHERE description LIKE '%${req.params.f_value}%'`;
       break;
-   
+    case "4":
+      filterSQL = `WHERE brand_name LIKE '%${req.params.f_value}%'`;
+      break;
+    case "5":
+      filterSQL = `WHERE producer_name LIKE '%${req.params.f_value}%'`;
+      break;
   }
   sql += filterSQL;
   con.query(sql, (err, result) => {
     if (err) {
       throw err;
     }
+ 
     res.json({
       msg: result,
       parts: result,
+    });
+  });
+});
+
+app.get("/brand", (req, res) => {
+  const sql = `
+        SELECT * 
+        FROM brand
+    `;
+    console.log(req.params)
+  con.query(sql, (err, result) => {
+    if (err) {
+      throw err;
+    }
+    res.json({
+      msg: "OK",
+      brand: result,
     });
   });
 });

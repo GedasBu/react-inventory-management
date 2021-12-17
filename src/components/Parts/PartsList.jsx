@@ -7,10 +7,11 @@ import {
 import PartsItem from "./PartsItem";
 import axios from "axios";
 import EditPart from "./EditPart";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AddPart } from "./AddPart";
 import Filter from "./Filter";
 import DeleteForm from "./DeleteForm";
+import { MdAdd } from "react-icons/md";
 
 
 const PartsList = (props) => {
@@ -20,14 +21,11 @@ const PartsList = (props) => {
   const [showDelModal, setshowDelModal] = useState(false);
   const [delPartId, setDelPartId] = useState();
   const [filterValue, setFilterValue] = useState({f_name:'', f_value:'' }); 
+  const filterElementNumber =[1,2,3,4,5]
+  const [parts, setParts] = useState([]);
+  const [updated, setUpdated] = useState(Date.now());
 
-  // //Filtras serverio puseje
-  // const serverFilter = (filterData) => {
-  //   axios.get("http://localhost:3003/dominos/filter/"+filterData).then((res) => {
-  //     setPlates(res.data.dominos.map(p=>({id:p.id,left:p.left_side,right:p.right_side})));
-  //   });
-  //   console.log('filtered data',filterData)
-  // };
+ 
 
   const handleDelModalClose = () => {
     setshowDelModal(false);
@@ -39,20 +37,38 @@ const PartsList = (props) => {
     setDelPartId(id);
   };
 
+  // Filtras serveryje
+  const serverFilter = () => {
+     console.log('filter',filterValue)
+    axios
+      .get(
+        `http://localhost:3003/parts/filter/${filterValue.f_value}/${filterValue.f_name}`
+      )
+      .then((res) => {
+        setParts(res.data.parts);
+      });
+  };
+
+  useEffect(() => {
+    axios.get("http://localhost:3003/parts").then((res) => {
+      setParts(res.data.parts);
+      console.log("parts")
+    });
+  }, [updated]);
+
   // Pridedame nauja irasa i duombaze. Siunciam uzklausa ir serveri
   const addPartsHandler = (data) => {
    axios.post("http://localhost:3003/parts/add", data).then((res) => {
-      props.partsUpdate(Date.now());
+    setUpdated(Date.now());
     });
   };
 
   // Triname irasa is duomenu bazes. Siunciame uzklausa i serveri
   const delPartHandler = () => {
-    console.log("delete id is state", delPartId);
-    axios
+     axios
       .delete("http://localhost:3003/parts/delete/" + delPartId)
       .then((res) => {
-        props.partsUpdate(Date.now());
+        setUpdated(Date.now());
       });
 
     //Uždarome delete issokanti langa
@@ -66,7 +82,7 @@ const PartsList = (props) => {
     axios
       .put("http://localhost:3003/parts/update/" + data.id, data)
       .then((res) => {
-        props.partsUpdate(Date.now());
+        setUpdated(Date.now());
       });
     setEditPart({});
   };
@@ -94,28 +110,16 @@ const PartsList = (props) => {
   //Paslepiame detales redagavimo forma
   const hideEditPartFormHandler = () => setEditPartForm(false);
   
-//Tikriname ar buvo paspaustas Enter mygtukas filtre ir priskiriame reiksme statui.
+//Tikriname ar buvo paspaustas Enter mygtukas filtre ir priskiriame reiksme steitui.
  const filterDataHandler=(fltrValue,fltrNumber)=>{
-     
-  if(fltrNumber===1) {    
-      setFilterValue({...filterValue, f_name:fltrNumber, f_value:fltrValue})
-  } else 
-  if(fltrNumber===2) {    
-    setFilterValue({...filterValue, f_name:fltrNumber, f_value:fltrValue})
-  } else
-  if(fltrNumber===3) {    
-    setFilterValue({...filterValue, f_name:fltrNumber, f_value:fltrValue})
-  } else {
+  setFilterValue({...filterValue, f_name:fltrNumber, f_value:fltrValue})
+  console.log('PartsList', fltrValue)
 
-    console.log('Sio filtro nera sarase')
-  }
-
- 
 }
 
-const sentToServer =()=>{
-    props.serverFilter(filterValue)
-  }
+// const sentToServer =()=>{
+//     serverFilter(filterValue)
+//   }
 
 
   return (
@@ -132,7 +136,7 @@ const sentToServer =()=>{
 
       {/* Naujos detales ivedimo form */}
       {addPartForm ? (
-        <AddPart hideAddPart={hideAddPartHandler} newPart={addPartsHandler} partsUpdate={props.partsUpdate} showAddPartForm={addPartForm}/>
+        <AddPart hideAddPart={hideAddPartHandler} newPart={addPartsHandler} partsUpdate={setUpdated} showAddPartForm={addPartForm}/>
       ) : null}
 
       {/* Parodome detales istrynimo Modala */}
@@ -153,7 +157,7 @@ const sentToServer =()=>{
             className="m-1"
             title="Pridėti detalę"
           >
-            +
+           <MdAdd/>
           </Button>
       </div>
       </Card>
@@ -171,28 +175,15 @@ const sentToServer =()=>{
             <th className="func_button"></th>
           </tr>
           <tr className="align-middle bg-light">
-            <th>#</th>
-            <th>
-            <Filter fltrNumber={1} filterFieldData={filterDataHandler} sentToServer={sentToServer} partsUpdate={props.partsUpdate}/>
-            </th>
-            <th>
-              <Filter fltrNumber={2} filterFieldData={filterDataHandler} sentToServer={sentToServer} partsUpdate={props.partsUpdate}/>
-            </th>
-            <th>
-              <Filter fltrNumber={3} filterFieldData={filterDataHandler} sentToServer={sentToServer} partsUpdate={props.partsUpdate}/>
-            </th>
-            <th>
-            <Filter fltrNumber={4} filterFieldData={filterDataHandler} sentToServer={sentToServer} partsUpdate={props.partsUpdate}/>
-            </th>
-            <th>
-            <Filter fltrNumber={5} filterFieldData={filterDataHandler} sentToServer={sentToServer} partsUpdate={props.partsUpdate}/>
-            </th>
+            <th>#</th>            
+            {filterElementNumber.map(x=>(<Filter key = {x} fltrNumber={x} filterFieldData={filterDataHandler} sentToServer={serverFilter} partsUpdate={setUpdated}/>))}
+                    
             <th></th>
             <th></th>
           </tr>
         </thead>
         <tbody>
-          {props.parts.map((p) => (
+          {parts.map((p) => (
             <PartsItem
               key={p.id}
               id={p.id}

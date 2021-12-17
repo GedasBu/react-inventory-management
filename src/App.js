@@ -1,14 +1,15 @@
 import axios from "axios";
 import "./App.css";
 import { useState } from "react";
-import PartsList from "./components/PartsList";
+import PartsList from "./components/Parts/PartsList";
 import { useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import SideNav from "./components/SideNav";
 import { Container, Row, Col } from "react-bootstrap";
 import MainNavbar from "./components/MainNavbar";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Brand from "./components/Brands/BrandList";
+import BrandList from "./components/Brands/BrandList";
+import Nox from "./components/Nox/Nox";
 
 
 function App(props) {
@@ -28,11 +29,12 @@ function App(props) {
   };
 
   // Gauname duomenis is duombazes
-  useEffect(() => {
-    axios.get("http://localhost:3003/parts").then((res) => {
-      setParts(res.data.parts);
-    });
-  }, [updated]);
+  // useEffect(() => {
+  //   axios.get("http://localhost:3003/parts").then((res) => {
+  //     setParts(res.data.parts);
+  //     console.log("parts")
+  //   });
+  // }, [updated]);
 
   return (
     
@@ -48,7 +50,8 @@ function App(props) {
            
             <Routes>
                 <Route path="/parts" element={<PartsList parts={parts} partsUpdate={setUpdated} serverFilter={serverFilter}/>}> </Route>
-                <Route path="/brands" element={<Brand/>}/>
+                <Route path="/brands" element={<BrandList />}/>
+                <Route path="/nox" element={<Nox/>}/>
             </Routes>            
            
           </Col>
