@@ -30,6 +30,7 @@ app.get("/", (req, res) => {
   res.send("Serveris veikia");
 });
 
+//PARTS CRUD, FILTER, SORT
 app.get("/parts", (req, res) => {
   const sql = `
         SELECT * 
@@ -150,22 +151,93 @@ app.get("/parts/filter/:f_value/:f_name", (req, res) => {
   });
 });
 
-app.get("/brand", (req, res) => {
+
+//BRANDS CRUD, FILTER, SORT
+app.get("/api/brands", (req, res) => {
   const sql = `
         SELECT * 
         FROM brand
     `;
-    console.log(req.params)
+    
   con.query(sql, (err, result) => {
     if (err) {
       throw err;
     }
+    console.log(res)
     res.json({
       msg: "OK",
       brand: result,
     });
   });
 });
+
+app.post("/api/brands/add", (req, res) => {
+  const sql = `
+        INSERT INTO
+        brand
+        (brand)
+        VALUES (?)
+    `;
+    console.log(req.body)
+  con.query(
+    sql,
+    [
+      req.body.brand,
+   
+    ],
+    (err) => {
+      if (err) throw err;
+      console.log('data',req.body);
+      console.log("1 record inserted");
+    }
+  );
+  res.json({
+    msg: "OKi",
+  });
+});
+
+app.delete("/api/brands/delete/:id", (req, res) => {
+  const sql = `
+          DELETE FROM brand
+      WHERE id=? 
+        `;
+  con.query(sql, [req.params.id], (err) => {
+    if (err) throw err;
+    console.log("1 record DELETED");
+  });
+  res.json({
+    msg: "OKi",
+  });
+});
+
+app.put("/api/brands/update/:id", (req, res) => {
+  const sql = `
+        UPDATE brand
+  SET brand = ?
+  WHERE id=? 
+      `;
+  con.query(
+    sql,
+    
+    [     
+      req.body.brand,
+      req.params.id
+     
+    ],
+    (err, res) => {
+      if (err) throw err;
+    
+      console.log("1 record updated");
+    }
+  );
+  res.json({
+    msg: `${res.message}`,
+  });
+});
+
+
+//PRODUCERS CRUD, FILTER, SORT
+
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);

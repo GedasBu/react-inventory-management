@@ -8,7 +8,7 @@ import SideNav from "./components/SideNav";
 import { Container, Row, Col } from "react-bootstrap";
 import MainNavbar from "./components/MainNavbar";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import BrandList from "./components/Brands/BrandList";
+import Brands from "./components/Brands/Brands";
 import Nox from "./components/Nox/Nox";
 
 
@@ -50,7 +50,7 @@ function App(props) {
            
             <Routes>
                 <Route path="/parts" element={<PartsList parts={parts} partsUpdate={setUpdated} serverFilter={serverFilter}/>}> </Route>
-                <Route path="/brands" element={<BrandList />}/>
+                <Route path="/brands" element={<Brands />}/>
                 <Route path="/nox" element={<Nox/>}/>
             </Routes>            
            

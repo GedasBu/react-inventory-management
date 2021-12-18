@@ -15,7 +15,7 @@ export const AddPart = (props) => {
   };
   const onSubmit = (e) => {
     e.preventDefault();
-    console.log(data)
+   
     if(data.part_number.trim().length === 0 || data.description.trim().length === 0 || data.producer_name.trim().length === 0){
       return;
     }
