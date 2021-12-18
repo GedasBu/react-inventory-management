@@ -6,13 +6,16 @@ import Filter from "./Filter";
 import AddBrand from "./AddBrand";
 import DeleteForm from "./DeleteForm";
 import EditBrand from "./EditBrand"
+import { MdAdd } from "react-icons/md";
 
 const BrandList = () => {
   const [brand, setBrand] = useState([]);
+  const [updated, setUpdated] = useState();  
   const [showAddBrand, setShowAddBrand] = useState(false);
-  const [updated, setUpdated] = useState();
+  
   const [showDelModal,setShowDelModal] = useState(false)
   const [delBrandId,setDelBrandId] = useState(false)
+
   const [editBrand, setEditBrand] = useState({});
   const [showEditBrand, setShowEditBrand] = useState(false)
 
@@ -66,7 +69,7 @@ const showDelModalHandler =(id)=>{
   }
 
   const setEditBrandHandler =(data)=>{   
-    console.log('axios', data.id)
+   
     axios
       .put("http://localhost:3003/api/brands/update/" + data.id, data)
       .then((res) => {
@@ -110,29 +113,30 @@ const showDelModalHandler =(id)=>{
         delBrand={deleteBrandHandler}              
         /> ) : null}
 
-      <Card className=" .brand mt-1 border-bottom-0 rounded-0 bg-light">
-        <Card.Header as="h5">Markės</Card.Header>
+      <Card className="  mt-1 border-bottom-0 rounded-0 " style={{ width: "18rem" }}>
+        <Card.Header as="h5" className="bg-light">Markės</Card.Header>
         <div>
           <Button
             variant="success"
             onClick={showAddBrandHandler}
             className="m-1"
             title="Pridėti markę"
+            size="sm"
           >
-            +
+           <MdAdd/>
           </Button>
         </div>
-      </Card>
+    
 
       <Table bordered hover size="sm" responsive >
         <thead>
           <tr className="align-middle border-bottom-0 bg-light">
-            <th className="id">Id</th>
-            <th className="th1">Markė</th>
-            <th className="func_button"></th>
-            <th className="func_button"></th>
+            <th >Id</th>
+            <th >Markė</th>
+            <th className="funkc_button"></th>
+            <th className="funkc_button"></th>
           </tr>
-          <tr className="align-middle bg-light">
+          <tr >
             <th>#</th>
             <th>
               {/* <Filter fltrNumber={1} filterFieldData={filterDataHandler} sentToServer={sentToServer} brandsUpdate={props.partsUpdate}/> */}
@@ -154,6 +158,7 @@ const showDelModalHandler =(id)=>{
           ))}
         </tbody>
       </Table>
+      </Card>
     </>
   );
 };

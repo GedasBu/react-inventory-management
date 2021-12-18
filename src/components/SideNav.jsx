@@ -13,10 +13,10 @@ const SideNav = () => {
         </Nav.Link>
       </Row>
       <Row className="border-bottom">
-        <Nav.Link eventKey="link-2" className="text-dark">Tiekėjai</Nav.Link>
+        <Nav.Link href="/producers" eventKey="/producers"className="text-dark">Gamintojai</Nav.Link>
       </Row>
       <Row className="border-bottom">
-        <Nav.Link eventKey="link-2" className="text-dark">Gamnitojai</Nav.Link>
+        <Nav.Link eventKey="link-2" className="text-dark">Tiekėjai</Nav.Link>
       </Row>
       <Row className="border-bottom">
         <Nav.Link eventKey="link-2" className="text-dark">Kainos</Nav.Link>

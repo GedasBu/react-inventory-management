@@ -163,7 +163,7 @@ app.get("/api/brands", (req, res) => {
     if (err) {
       throw err;
     }
-    console.log(res)
+ 
     res.json({
       msg: "OK",
       brand: result,
@@ -237,6 +237,87 @@ app.put("/api/brands/update/:id", (req, res) => {
 
 
 //PRODUCERS CRUD, FILTER, SORT
+
+app.get("/api/producers", (req, res) => {
+  const sql = `
+        SELECT * 
+        FROM producer
+    `;
+    
+  con.query(sql, (err, result) => {
+    if (err) {
+      throw err;
+      
+    }
+  
+    res.json({
+      msg: "OK",
+      producer: result,
+    });
+  });
+});
+
+app.post("/api/producers/add", (req, res) => {
+  const sql = `
+        INSERT INTO
+        producer
+        (producer)
+        VALUES (?)
+    `;
+  
+  con.query(
+    sql,
+    [
+      req.body.producer,
+   
+    ],
+    (err) => {
+      if (err) throw err;
+          console.log("1 record inserted");
+    }
+  );
+  res.json({
+    msg: "OKi",
+  });
+});
+
+app.delete("/api/producers/delete/:id", (req, res) => {
+  const sql = `
+          DELETE FROM producer
+      WHERE id=? 
+        `;
+  con.query(sql, [req.params.id], (err) => {
+    if (err) throw err;
+    console.log("1 record DELETED");
+  });
+  res.json({
+    msg: "OKi",
+  });
+});
+
+app.put("/api/producers/update/:id", (req, res) => {
+  const sql = `
+        UPDATE producer
+  SET producer = ?
+  WHERE id=? 
+      `;
+  con.query(
+    sql,
+    
+    [     
+      req.body.producer,
+      req.params.id
+     
+    ],
+    (err, res) => {
+      if (err) throw err;    
+      console.log("1 record updated");
+    }
+  );
+  res.json({
+    msg: `${res.message}`,
+  });
+});
 
 
 app.listen(port, () => {

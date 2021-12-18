@@ -13,22 +13,22 @@ const BrandItem = (props) => {
   };
 
   return (
-    <tr className="align-middle" onDoubleClick={getEditIdHandler}>
+    <tr className="align-middle px-0" onDoubleClick={getEditIdHandler}>
       <td>{props.id}</td>
       <td>{props.name}</td>
      <td className="text-center ">
-        <a href="#/" onClick={getEditIdHandler} >
-          <Button variant="primary">          
+   
+          <Button variant="primary" size="sm" onClick={getEditIdHandler}>          
             <MdEdit />
           </Button>
-        </a>
+       
       </td>
-      <td className="text-center">
-        <a href="#/" onClick={DeleteByIdHandler} >
-          <Button variant="danger">
+      <td className="text-center ">
+       
+          <Button variant="danger" size="sm" onClick={DeleteByIdHandler}>
             <MdDeleteForever />
           </Button>
-        </a>
+     
       </td>
     </tr>
   );

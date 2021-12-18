@@ -1,5 +1,7 @@
-import { Form, Button, Modal,Row,Col } from "react-bootstrap";
+import { Form, Button, Modal, Row, Col, InputGroup } from "react-bootstrap";
 import { useState } from "react";
+import Brands from "./Brands";
+import Producers from "./Producers";
 
 export const AddPart = (props) => {
   const [data, setData] = useState({
@@ -15,11 +17,15 @@ export const AddPart = (props) => {
   };
   const onSubmit = (e) => {
     e.preventDefault();
-   
-    if(data.part_number.trim().length === 0 || data.description.trim().length === 0 || data.producer_name.trim().length === 0){
+
+    if (
+      data.part_number.trim().length === 0 ||
+      data.description.trim().length === 0 ||
+      data.producer_name.trim().length === 0
+    ) {
       return;
     }
-    
+
     props.newPart(data);
     props.hideAddPart();
   };
@@ -42,8 +48,8 @@ export const AddPart = (props) => {
                 value={data.part_number}
                 onChange={handleChange}
               />
-              </Form.Group>
-              <Form.Group>
+            </Form.Group>
+            <Form.Group>
               <Form.Label>Numeris2</Form.Label>
               <Form.Control
                 type="text"
@@ -51,8 +57,8 @@ export const AddPart = (props) => {
                 value={data.part_number_1}
                 onChange={handleChange}
               />
-              </Form.Group>
-              <Form.Group>
+            </Form.Group>
+            <Form.Group>
               <Form.Label>Pavadinimas*</Form.Label>
               <Form.Control
                 type="text"
@@ -62,20 +68,44 @@ export const AddPart = (props) => {
               />
             </Form.Group>
 
-        <Row>
-          <Col md>
-            <Form.Group>
-              <Form.Label>Markė</Form.Label>
-              <Form.Control
-                type="text"
-                name="brand_name"
-                value={data.brand_name}
-                onChange={handleChange}
-              />
-            </Form.Group>
-          </Col>
-          <Col  md>
-            <Form.Group>
+            <Row>
+              <Col md>
+                <Form.Group>
+                  <Form.Label>Markė</Form.Label>
+                  <Form.Select
+                    name="brand_name"
+                    aria-label="Default select example"
+                    value={data.brand_name}
+                    onChange={handleChange}
+                  >
+                    <Brands />
+                  </Form.Select>
+                  <br />
+                </Form.Group>
+              </Col>
+              <Col md>
+                <Form.Label>Gamintojas*</Form.Label>
+                {/* <Producers/> */}
+                <InputGroup>
+                  <Form.Control
+                     type="text"
+                     name="producer_name"
+                     value={data.producer_name}
+                     onChange={handleChange}
+                     placeholder="Tobulinama..."
+                  ></Form.Control>
+                  <Button
+                    className="border bg-white"
+                    variant="outline-secondary"
+                    title="Pasirinkti gamitnoją"
+                    // size="sm"
+                    // onClick={resetFilter}
+                  >
+                    +
+                  </Button>{" "}
+                </InputGroup>
+
+                {/* <Form.Group>
               <Form.Label>Gamintojas*</Form.Label>
               <Form.Control
                 type="text"
@@ -83,10 +113,9 @@ export const AddPart = (props) => {
                 value={data.producer_name}
                 onChange={handleChange}
               />
-            </Form.Group>
-          </Col>
-        </Row>
-
+            </Form.Group> */}
+              </Col>
+            </Row>
           </Modal.Body>
           <Modal.Footer>
             <br />

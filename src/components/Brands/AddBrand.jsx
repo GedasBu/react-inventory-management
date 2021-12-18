@@ -49,8 +49,9 @@ const AddBrand = (props) => {
               />
             </Form.Group>
           </Modal.Body>
+
           <Modal.Footer>
-            <br />
+          
             <Button variant="success" type="submit">
               Pridėti
             </Button>{" "}

@@ -19,16 +19,16 @@ const PartsItem = (props) => {
       <td>{props.description}</td>
       <td>{props.brand}</td>
       <td>{props.producer}</td>
-      <td className="text-center">
+      <td className="text-center px-1">
         <a href="#/" onClick={getEditIdHandler} >
-          <Button variant="primary">          
+          <Button variant="primary" size="sm">          
             <MdEdit />
           </Button>
         </a>
       </td>
-      <td className="text-center">
+      <td className="text-center px-1">
         <a href="#/" onClick={getDeleteIdHandler}>
-          <Button variant="danger">
+          <Button variant="danger" size="sm">
             <MdDeleteForever />
           </Button>
         </a>

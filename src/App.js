@@ -10,6 +10,7 @@ import MainNavbar from "./components/MainNavbar";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Brands from "./components/Brands/Brands";
 import Nox from "./components/Nox/Nox";
+import Producers from "./components/Producers/Producers";
 
 
 function App(props) {
@@ -49,6 +50,7 @@ function App(props) {
           <Col className="border border-top-0 border-bottom-0">
            
             <Routes>
+                <Route path="/producers" element={<Producers/>}/>
                 <Route path="/parts" element={<PartsList parts={parts} partsUpdate={setUpdated} serverFilter={serverFilter}/>}> </Route>
                 <Route path="/brands" element={<Brands />}/>
                 <Route path="/nox" element={<Nox/>}/>

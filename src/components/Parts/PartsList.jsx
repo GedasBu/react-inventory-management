@@ -148,19 +148,21 @@ const PartsList = (props) => {
         />
       ) : null}
 
-      <Card className="mt-1 border-bottom-0 rounded-0 bg-light">
-      <Card.Header as="h5">Prekės</Card.Header>
+      <Card className="mt-1 border-bottom-0 rounded-0 ">
+      <Card.Header as="h5" className="bg-light">Prekės</Card.Header>
      <div>         
           <Button
             variant="success"
             onClick={addPartHandler}
             className="m-1"
             title="Pridėti detalę"
+            size="sm"
           >
            <MdAdd/>
           </Button>
       </div>
       </Card>
+      
 
       <Table  bordered hover size="sm" responsive>
         <thead >
@@ -171,8 +173,8 @@ const PartsList = (props) => {
             <th>Pavadinimas</th>
             <th className="th1">Markė</th>
             <th className="th1">Gamintojas</th>
-            <th className="func_button" ></th>
-            <th className="func_button"></th>
+            <th className="funkc_button" ></th>
+            <th className="funkc_button"></th>
           </tr>
           <tr className="align-middle bg-light">
             <th>#</th>            
@@ -198,6 +200,7 @@ const PartsList = (props) => {
           ))}
         </tbody>
       </Table>
+      
     </>
   );
 };
