@@ -2,8 +2,11 @@ import { Form, Button, Modal, Row, Col, InputGroup } from "react-bootstrap";
 import { useState } from "react";
 import Brands from "./Brands";
 import Producers from "./Producers";
+import { useGlobalContext } from "../../context/PartsContext";
 
 export const AddPart = (props) => {
+  const {parts, partsAddForm, handleAddPartForm} = useGlobalContext();
+  console.log(partsAddForm)
   const [data, setData] = useState({
     part_number: "",
     part_number_1: "",
@@ -41,7 +44,7 @@ export const AddPart = (props) => {
   
   return (
     <>
-      <Modal show={props.showAddPartForm} onHide={props.hideAddPart}>
+      <Modal show={partsAddForm} onHide={props.hideAddPart}>
         <Modal.Header>
           <Modal.Title id="contained-modal-title-vcenter">
             Pridėti prekę

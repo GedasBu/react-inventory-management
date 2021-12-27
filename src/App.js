@@ -11,6 +11,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Brands from "./components/Brands/Brands";
 import Nox from "./components/Nox/Nox";
 import Producers from "./components/Producers/Producers";
+import {AppProvider} from "./context/PartsContext"
 
 
 function App(props) {
@@ -29,39 +30,34 @@ function App(props) {
       });
   };
 
-  // Gauname duomenis is duombazes
-  // useEffect(() => {
-  //   axios.get("http://localhost:3003/parts").then((res) => {
-  //     setParts(res.data.parts);
-  //     console.log("parts")
-  //   });
-  // }, [updated]);
-
   return (
-    
+
     <Router>
-      <MainNavbar />
-      <Container fluid className="border">
-        <Row>
-          <Col xxl={1}>
-            <SideNav />
-          </Col>
- 
-          <Col className="border border-top-0 border-bottom-0">
-           
-            <Routes>
-                <Route path="/producers" element={<Producers/>}/>
-                <Route path="/parts" element={<PartsList parts={parts} partsUpdate={setUpdated} serverFilter={serverFilter}/>}> </Route>
-                <Route path="/brands" element={<Brands />}/>
-                <Route path="/nox" element={<Nox/>}/>
-            </Routes>            
-           
-          </Col>
-        </Row>
-      </Container>    
-        </Router>
-  
-  
+      <AppProvider>
+        <MainNavbar />
+        <Container fluid className="border">
+          <Row>
+            <Col xxl={1}>
+              <SideNav />
+            </Col>
+
+            <Col className="border border-top-0 border-bottom-0">
+
+              <Routes>
+                
+                <Route path="/producers" element={<Producers />} />
+                <Route path="/parts" element={<PartsList parts={parts} partsUpdate={setUpdated} serverFilter={serverFilter} />}> </Route>
+                <Route path="/brands" element={<Brands />} />
+                <Route path="/nox" element={<Nox />} />
+              </Routes>
+
+            </Col>
+          </Row>
+        </Container>
+      </AppProvider>
+    </Router>
+
+
   );
 }
 

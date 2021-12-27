@@ -1,9 +1,4 @@
-import {
-  Table,
-  Button,
-  Card,
-    
-} from "react-bootstrap";
+import {Table, Button, Card } from "react-bootstrap";
 import PartsItem from "./PartsItem";
 import axios from "axios";
 import EditPart from "./EditPart";
@@ -12,17 +7,18 @@ import { AddPart } from "./AddPart";
 import Filter from "./Filter";
 import DeleteForm from "./DeleteForm";
 import { MdAdd } from "react-icons/md";
+import { useGlobalContext } from "../../context/PartsContext";
 
 
 const PartsList = (props) => {
+  const {parts, partsAddForm, handleAddPartForm} = useGlobalContext();
   const [editPart, setEditPart] = useState({});
-  const [addPartForm, setAddPartForm] = useState(false);
+  // const [addPartForm, setAddPartForm] = useState(false);
   const [editPartForm, setEditPartForm] = useState(false);
   const [showDelModal, setshowDelModal] = useState(false);
   const [delPartId, setDelPartId] = useState();
   const [filterValue, setFilterValue] = useState({f_name:'', f_value:'' }); 
   const filterElementNumber =[1,2,3,4,5]
-  const [parts, setParts] = useState([]);
   const [updated, setUpdated] = useState(Date.now());
 
  
@@ -40,21 +36,21 @@ const PartsList = (props) => {
   // Filtras serveryje
   const serverFilter = () => {
      console.log('filter',filterValue)
-    axios
-      .get(
-        `http://localhost:3003/parts/filter/${filterValue.f_value}/${filterValue.f_name}`
-      )
-      .then((res) => {
-        setParts(res.data.parts);
-      });
+    // axios
+    //   .get(
+    //     `http://localhost:3003/parts/filter/${filterValue.f_value}/${filterValue.f_name}`
+    //   )
+    //   .then((res) => {
+    //     setParts(res.data.parts);
+    //   });
   };
 
-  useEffect(() => {
-    axios.get("http://localhost:3003/parts").then((res) => {
-      setParts(res.data.parts);
-      console.log("parts")
-    });
-  }, [updated]);
+  // useEffect(() => {
+  //   axios.get("http://localhost:3003/parts").then((res) => {
+  //     setParts(res.data.parts);
+  //     
+  //   });
+  // }, [updated]);
 
   // Pridedame nauja irasa i duombaze. Siunciam uzklausa ir serveri
   const addPartsHandler = (data) => {
@@ -102,10 +98,10 @@ const PartsList = (props) => {
   };
 
   //Atidarome naujos detales forma pakeiciant state
-  const addPartHandler = () => setAddPartForm(true);
+  // const addPartHandler = () => setAddPartForm(true);
 
   //Paslepiame naujos detales ivedimo forma
-  const hideAddPartHandler = () => setAddPartForm(false);
+  // const hideAddPartHandler = () => setAddPartForm(false);
 
   //Paslepiame detales redagavimo forma
   const hideEditPartFormHandler = () => setEditPartForm(false);
@@ -116,11 +112,7 @@ const PartsList = (props) => {
   console.log('PartsList', fltrValue)
 
 }
-
-// const sentToServer =()=>{
-//     serverFilter(filterValue)
-//   }
-
+console.log(partsAddForm)
 
   return (
     <>
@@ -134,9 +126,9 @@ const PartsList = (props) => {
         />
       ) : null}
 
-      {/* Naujos detales ivedimo form */}
-      {addPartForm ? (
-        <AddPart hideAddPart={hideAddPartHandler} newPart={addPartsHandler} partsUpdate={setUpdated} showAddPartForm={addPartForm}/>
+      {/* Naujos detales ivedimo forma */}
+      {partsAddForm ? (
+        <AddPart  newPart={addPartsHandler} partsUpdate={setUpdated} />
       ) : null}
 
       {/* Parodome detales istrynimo Modala */}
@@ -153,7 +145,7 @@ const PartsList = (props) => {
      <div>         
           <Button
             variant="success"
-            onClick={addPartHandler}
+            onClick={()=>{handleAddPartForm(true)}}
             className="m-1"
             title="Pridėti detalę"
             size="sm"
