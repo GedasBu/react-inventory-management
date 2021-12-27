@@ -319,6 +319,91 @@ app.put("/api/producers/update/:id", (req, res) => {
   });
 });
 
+//SUPPLIERS CRUD, FILTER, SORT
+
+app.get("/api/suppliers", (req, res) => {
+  const sql = `
+        SELECT * 
+        FROM suppliers
+    `;
+    
+  con.query(sql, (err, result) => {
+    if (err) {
+      throw err;
+      
+    }
+  
+    res.json({
+      msg: "OK",
+      producer: result,
+    });
+  });
+});
+
+app.post("/api/suppliers/add", (req, res) => {
+  const sql = `
+        INSERT INTO
+        suppliers
+        (name,country,comment)
+        VALUES (?,?,?)
+    `;
+  
+  con.query(
+    sql,
+    [
+      req.body.producer,
+      req.body.country,
+      req.body.comment
+   
+    ],
+    (err) => {
+      if (err) throw err;
+          console.log("1 record inserted");
+    }
+  );
+  res.json({
+    msg: "OKi",
+  });
+});
+
+app.delete("/api/suppliers/delete/:id", (req, res) => {
+  const sql = `
+          DELETE FROM suppliers
+      WHERE id=? 
+        `;
+  con.query(sql, [req.params.id], (err) => {
+    if (err) throw err;
+    console.log("1 record DELETED");
+  });
+  res.json({
+    msg: "OKi",
+  });
+});
+
+app.put("/api/suppliers/update/:id", (req, res) => {
+  const sql = `
+        UPDATE suppliers
+  SET producer = ?
+  WHERE id=? 
+      `;
+  con.query(
+    sql,
+    
+    [     
+      req.body.producer,
+      req.params.id
+     
+    ],
+    (err, res) => {
+      if (err) throw err;    
+      console.log("1 record updated");
+    }
+  );
+  res.json({
+    msg: `${res.message}`,
+  });
+});
+
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);

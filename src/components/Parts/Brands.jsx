@@ -1,23 +1,26 @@
 import Brand from "./Brand";
 import axios from "axios";
-import {useState, useEffect} from "react";
+import { Form } from "react-bootstrap";
+import { useState, useEffect } from "react";
 
-const Brands = ()=>{
-    const [brands, setBrands]=useState([])
+const Brands = () => {
+  const [brands, setBrands] = useState([]);
 
-    useEffect(() => {
-        axios.get(`http://localhost:3003/api/brands`).then((res) => {
-          setBrands(res.data.brand);
-        });
-      }, []);
-         
+  useEffect(() => {
+    axios.get(`http://localhost:3003/api/brands`).then((res) => {
+      setBrands(res.data.brand);
+    });
+  }, []);
 
-    return(
-        <>
+  return (
+    <>
+     
         <option>Pasirinkite markę</option>
-        {brands.map(br => <Brand key={br.id} brand={br.brand}/>)}
-        
-        </>
-    )
-}
+        {brands.map((br) => (
+          <option key={br.id}>{br.brand}</option>
+        ))}
+    
+    </>
+  );
+};
 export default Brands;

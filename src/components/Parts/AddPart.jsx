@@ -15,6 +15,13 @@ export const AddPart = (props) => {
   const handleChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
   };
+  const setProducerHandler =(producer)=>{
+    setData({...data, producer_name:producer })
+
+  }
+  const setBrandHandler = (brand)=>{
+    setData({...data,brand_name:brand})
+  }
   const onSubmit = (e) => {
     e.preventDefault();
 
@@ -23,13 +30,15 @@ export const AddPart = (props) => {
       data.description.trim().length === 0 ||
       data.producer_name.trim().length === 0
     ) {
+      console.log(data)
       return;
     }
 
     props.newPart(data);
     props.hideAddPart();
+    console.log(data)
   };
-
+  
   return (
     <>
       <Modal show={props.showAddPartForm} onHide={props.hideAddPart}>
@@ -73,47 +82,21 @@ export const AddPart = (props) => {
                 <Form.Group>
                   <Form.Label>Markė</Form.Label>
                   <Form.Select
-                    name="brand_name"
-                    aria-label="Default select example"
+                    name="brand_name"                 
                     value={data.brand_name}
                     onChange={handleChange}
                   >
                     <Brands />
                   </Form.Select>
+                  
                   <br />
                 </Form.Group>
               </Col>
               <Col md>
+                <Form.Group>
                 <Form.Label>Gamintojas*</Form.Label>
-                {/* <Producers/> */}
-                <InputGroup>
-                  <Form.Control
-                     type="text"
-                     name="producer_name"
-                     value={data.producer_name}
-                     onChange={handleChange}
-                     placeholder="Tobulinama..."
-                  ></Form.Control>
-                  <Button
-                    className="border bg-white"
-                    variant="outline-secondary"
-                    title="Pasirinkti gamitnoją"
-                    // size="sm"
-                    // onClick={resetFilter}
-                  >
-                    +
-                  </Button>{" "}
-                </InputGroup>
-
-                {/* <Form.Group>
-              <Form.Label>Gamintojas*</Form.Label>
-              <Form.Control
-                type="text"
-                name="producer_name"
-                value={data.producer_name}
-                onChange={handleChange}
-              />
-            </Form.Group> */}
+                <Producers setProducer={setProducerHandler}/>
+              </Form.Group>
               </Col>
             </Row>
           </Modal.Body>
