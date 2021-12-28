@@ -127,9 +127,9 @@ console.log(partsAddForm)
       ) : null}
 
       {/* Naujos detales ivedimo forma */}
-      {partsAddForm ? (
-        <AddPart  newPart={addPartsHandler} partsUpdate={setUpdated} />
-      ) : null}
+      
+        <AddPart  newPart={addPartsHandler} partsUpdate={setUpdated} show={partsAddForm} />
+   
 
       {/* Parodome detales istrynimo Modala */}
       {showDelModal ? (

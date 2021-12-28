@@ -6,7 +6,7 @@ import { useGlobalContext } from "../../context/PartsContext";
 
 export const AddPart = (props) => {
   const {parts, partsAddForm, handleAddPartForm} = useGlobalContext();
-  console.log(partsAddForm)
+  console.log('is parts add',partsAddForm)
   const [data, setData] = useState({
     part_number: "",
     part_number_1: "",
@@ -33,18 +33,18 @@ export const AddPart = (props) => {
       data.description.trim().length === 0 ||
       data.producer_name.trim().length === 0
     ) {
-      console.log(data)
+     
       return;
     }
 
     props.newPart(data);
     props.hideAddPart();
-    console.log(data)
+    
   };
-  
+
   return (
     <>
-      <Modal show={partsAddForm} onHide={props.hideAddPart}>
+      <Modal show={props.show} onHide={props.hideAddPart}>
         <Modal.Header>
           <Modal.Title id="contained-modal-title-vcenter">
             Pridėti prekę
@@ -108,7 +108,7 @@ export const AddPart = (props) => {
             <Button variant="success" type="submit">
               Pridėti
             </Button>{" "}
-            <Button variant="danger" onClick={props.hideAddPart}>
+            <Button variant="danger" onClick={()=>{handleAddPartForm(false)}}>
               Atšaukti
             </Button>
           </Modal.Footer>
