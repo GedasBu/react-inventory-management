@@ -1,4 +1,4 @@
-import { createContext, useContext, useReducer, useEffect } from "react";
+import { createContext, useContext, useReducer, useEffect, useState} from "react";
 import { getParts, addPartsForm } from "../actions/PartsActions";
 import PartsReducer from "../reducers/PartsReducers";
 import axios from "axios";
@@ -13,6 +13,8 @@ const AppContext = createContext();
 
 const AppProvider = ({ children }) => {
     const [state, dispatch] = useReducer(PartsReducer, initialState)
+    const [updated, setUpdated] = useState(Date.now());
+  
    
     useEffect(() => {
         axios.get("http://localhost:3003/parts").then((res) => {
@@ -21,8 +23,7 @@ const AppProvider = ({ children }) => {
          });
       }, []);
 
-    const handleAddPartForm = (status)=>{
-        console.log(status)
+    const handleAddPartForm = (status)=>{     
         dispatch(addPartsForm(status))
     }
 

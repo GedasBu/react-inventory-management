@@ -1,12 +1,12 @@
-import { Form, Button, Modal, Row, Col, InputGroup } from "react-bootstrap";
+import { Form, Button, Modal, Row, Col, InputGroup, FormGroup } from "react-bootstrap";
 import { useState } from "react";
 import Brands from "./Brands";
 import Producers from "./Producers";
 import { useGlobalContext } from "../../context/PartsContext";
 
 export const AddPart = (props) => {
-  const {parts, partsAddForm, handleAddPartForm} = useGlobalContext();
-  console.log('is parts add',partsAddForm)
+  const { parts, partsAddForm, handleAddPartForm } = useGlobalContext();
+
   const [data, setData] = useState({
     part_number: "",
     part_number_1: "",
@@ -18,12 +18,12 @@ export const AddPart = (props) => {
   const handleChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
   };
-  const setProducerHandler =(producer)=>{
-    setData({...data, producer_name:producer })
+  const setProducerHandler = (producer) => {
+    setData({ ...data, producer_name: producer })
 
   }
-  const setBrandHandler = (brand)=>{
-    setData({...data,brand_name:brand})
+  const setBrandHandler = (brand) => {
+    setData({ ...data, brand_name: brand })
   }
   const onSubmit = (e) => {
     e.preventDefault();
@@ -33,13 +33,14 @@ export const AddPart = (props) => {
       data.description.trim().length === 0 ||
       data.producer_name.trim().length === 0
     ) {
-     
+
       return;
     }
 
     props.newPart(data);
-    props.hideAddPart();
-    
+    handleAddPartForm(false)
+   
+
   };
 
   return (
@@ -83,23 +84,60 @@ export const AddPart = (props) => {
             <Row>
               <Col md>
                 <Form.Group>
-                  <Form.Label>Markė</Form.Label>
-                  <Form.Select
+                  <Form.Label >Markė</Form.Label>
+                  {/* <Form.Select
                     name="brand_name"                 
                     value={data.brand_name}
                     onChange={handleChange}
                   >
                     <Brands />
-                  </Form.Select>
-                  
-                  <br />
+                  </Form.Select> */}
+
+                  <Form.Control
+                    type="list"
+                    placeholder="Markė"
+                    name="brand_name"
+                    value={data.brand_name}
+                    onChange={handleChange}
+                    list="brand_name"
+                    autocomplete='off' >
+                  </Form.Control>
+                  <Brands />
                 </Form.Group>
               </Col>
               <Col md>
-                <Form.Group>
-                <Form.Label>Gamintojas*</Form.Label>
-                <Producers setProducer={setProducerHandler}/>
-              </Form.Group>
+
+                {/* <Form.Label>Gamintojas*</Form.Label>
+                  <Producers setProducer={setProducerHandler} /> */}
+
+                <FormGroup>                  
+                    <Form.Label>Gamintojas*</Form.Label>
+                    <InputGroup>
+                    <Form.Control
+                      type="data-list"
+                      placeholder="Gamintojas"
+                      name="producer_name"
+                      value={data.producer_name}
+                      onChange={handleChange}
+                      list="producer_name"
+                      autocomplete='on' >
+                    </Form.Control>
+                    <Button
+                      className="border bg-white"
+                      variant="outline-secondary"
+                      title="Pasirinkti gamitnoją"
+                     >
+                      +
+                    </Button>{" "}
+                    </InputGroup>
+                    <Producers />                  
+                </FormGroup>
+
+
+
+
+
+
               </Col>
             </Row>
           </Modal.Body>
@@ -108,7 +146,7 @@ export const AddPart = (props) => {
             <Button variant="success" type="submit">
               Pridėti
             </Button>{" "}
-            <Button variant="danger" onClick={()=>{handleAddPartForm(false)}}>
+            <Button variant="danger" onClick={() => { handleAddPartForm(false) }}>
               Atšaukti
             </Button>
           </Modal.Footer>

@@ -17,39 +17,39 @@ const Producers = (props) => {
 
 
 
-  const showModalHandler = () => {
-    (showModal)? setShowModal(false): setShowModal(true)
+  // const showModalHandler = () => {
+  //   (showModal)? setShowModal(false): setShowModal(true)
    
-  };
-  const setInputValueHandler=(value)=>{
-    setInputValue(value)
-      props.setProducer(value.producer_name)
+  // };
+  // const setInputValueHandler=(value)=>{
+  //   setInputValue(value)
+  //     props.setProducer(value.producer_name)
 
-  }
+  // }
 
 
   return (
     <>
-    {showModal && <Producer producersList={producers} showProducer={showModalHandler} setInputValue={setInputValueHandler}/>}
-      <InputGroup>
-        <Form.Control
+    {/* {showModal && <Producer producersList={producers} showProducer={showModalHandler} setInputValue={setInputValueHandler}/>} */}
+      
+        {/* <Form.Control
           type="text"
           placeholder="Gamintojas..."
           className="border"
           value={inputValue.producer_name}
           readOnly
         
-        ></Form.Control>
-        <Button
-          className="border bg-white"
-          variant="outline-secondary"
-          title="Pasirinkti gamitnoją"
-          // size="sm"
-          onClick={showModalHandler}
-        >
-          +
-        </Button>{" "}
-      </InputGroup>
+        ></Form.Control> */}
+      <datalist id="producer_name">
+        {producers.map((pr) => (
+          <option key={pr.id}>{pr.producer}</option>
+          
+        ))}
+
+      </datalist>
+
+       
+     
     </>
   );
 };

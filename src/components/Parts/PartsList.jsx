@@ -10,6 +10,7 @@ import { MdAdd } from "react-icons/md";
 import { useGlobalContext } from "../../context/PartsContext";
 
 
+
 const PartsList = (props) => {
   const {parts, partsAddForm, handleAddPartForm} = useGlobalContext();
   const [editPart, setEditPart] = useState({});
@@ -21,7 +22,7 @@ const PartsList = (props) => {
   const filterElementNumber =[1,2,3,4,5]
   const [updated, setUpdated] = useState(Date.now());
 
- 
+
 
   const handleDelModalClose = () => {
     setshowDelModal(false);
@@ -112,7 +113,7 @@ const PartsList = (props) => {
   console.log('PartsList', fltrValue)
 
 }
-console.log(partsAddForm)
+
 
   return (
     <>

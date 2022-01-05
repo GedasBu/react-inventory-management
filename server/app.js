@@ -335,7 +335,7 @@ app.get("/api/suppliers", (req, res) => {
   
     res.json({
       msg: "OK",
-      producer: result,
+      suppliers: result,
     });
   });
 });

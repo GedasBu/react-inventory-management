@@ -8,7 +8,7 @@ export const getParts =(data)=>{
 }
 export const addPartsForm = (status)=>{
     return{
-        tyoe: OPEN_ADD_FORM,
+        type: OPEN_ADD_FORM,
         payload: status
     }
 }

@@ -14,12 +14,26 @@ const Brands = () => {
 
   return (
     <>
-     
-        <option>Pasirinkite markę</option>
+
+      {/* <option>Pasirinkite markę</option>
+        {brands.map((br) => (
+          <option key={br.id}>{br.brand}</option>
+        ))} */}
+
+      <datalist id="brand_name">
         {brands.map((br) => (
           <option key={br.id}>{br.brand}</option>
         ))}
-    
+
+      </datalist>
+
+
+
+
+
+
+
+
     </>
   );
 };
