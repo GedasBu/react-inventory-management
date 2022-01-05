@@ -1,7 +1,14 @@
 import {Button} from "react-bootstrap"
 import { MdDeleteForever, MdEdit } from "react-icons/md";
+import { useGlobalContext } from "../../context/SuppliersContext";
 
 const SupplierItem = (props)=>{
+  const {handleDelSupplierModal} = useGlobalContext();
+  
+
+
+
+
 
     return (
         <tr className="align-middle px-0">
@@ -17,7 +24,7 @@ const SupplierItem = (props)=>{
       </td>
       <td className="text-center ">
        
-          <Button variant="danger" size="sm" >
+          <Button variant="danger" size="sm" onClick={()=>{handleDelSupplierModal(true, props.id)}}>
             <MdDeleteForever />
           </Button>
         

@@ -1,12 +1,15 @@
 import { createContext, useContext, useReducer, useEffect, useState} from "react";
-import { getSuppliers, supplierAddForm } from "../actions/SuppliersActions";
+import { getSuppliers, supplierAddForm, delSupplier,delSupplierModal} from "../actions/SuppliersActions";
 import SuppliersReducer from "../reducers/SuppliersReducers";
 import axios from "axios";
 
 
 const initialState = {
     suppliers: [],
-    suppliersAddForm: false,
+    supplierAddForm: false,
+    delModal: false,
+    delSupplierId:''
+   
 }
 
 const SuppliersContext = createContext();
@@ -22,16 +25,44 @@ const SuppliersProvider = ({ children }) => {
         
           
          });
-      }, []);
+      }, [updated]);
 
     const handleAddSupplierForm = (status)=>{     
-        dispatch(supplierAddForm(status))
+        dispatch(supplierAddForm(status)) 
+          
     }
+
+    const handleDelSupplierModal = (status, id)=>{
+        dispatch(delSupplierModal(status, id))
+       
+     
+    }
+
+    const addSupplierHandler = (data) => {
+        axios.post("http://localhost:3003/api/suppliers/add", data).then((res) => {
+          setUpdated(Date.now());
+        });
+      }
+
+      const deleteSupplierHandler = (id) => {
+           
+        axios
+          .delete("http://localhost:3003/api/suppliers/delete/" + id)
+          .then((res) => {
+            setUpdated(Date.now());
+          });
+        
+          handleDelSupplierModal(false,id);
+       
+        
+      }; 
 
     
 
+ 
+
     return (
-        <SuppliersContext.Provider value={{...state, handleAddSupplierForm}}>
+        <SuppliersContext.Provider value={{...state, handleAddSupplierForm,addSupplierHandler,deleteSupplierHandler,handleDelSupplierModal }}>
             {children}
         </SuppliersContext.Provider>
     )

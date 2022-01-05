@@ -5,7 +5,7 @@ import SupplierItem from "./SupplierItem";
 const SuppliersTable =()=>{
     const {suppliers}=useGlobalContext();
 
-    console.log('is table', suppliers)
+  
 
 
     return (

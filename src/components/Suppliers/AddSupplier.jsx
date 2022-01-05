@@ -1,65 +1,77 @@
 import { Form, Button, Modal, Row, Col, InputGroup } from "react-bootstrap";
 import { useState } from "react";
+import { useGlobalContext } from "../../context/SuppliersContext";
 
-const AddSupplier = (props) => {
-  const [data, setData] = useState({ producer: "" });
-  const [inputText, setInputText] = useState(false);
+const AddSupplier = () => {
 
-  const handleChange =(e)=>{
-    setData({[e.target.name]: e.target.value})
-}
+    const { supplierAddForm, handleAddSupplierForm, addSupplierHandler } = useGlobalContext();
+    const [data, setData] = useState({name:'', country:'', comment:''});
+    const [inputText, setInputText] = useState(false);
+   
 
-  const onSubmit = (e) => {
-    e.preventDefault();
-    if (data.producer.trim().length === 0) {
-      setInputText(true);
-      return;
+    const handleChange = (e) => {
+        setData({...data, [e.target.name]: e.target.value })
     }
-    props.addProducer(data);
-    setData({producer:''})    
-  };
-  
-  const cancelInput =()=>{
-    setInputText(false);
-     props.hideAddBrand();
+    const onSubmit = (e) => {
+        e.preventDefault();
+        if (data.name.trim().length === 0) {
+            setInputText(true);
+            return;
+        }
+        if (data.country.trim().length === 0) {
+            setInputText(true);
+            return;
+        }    
+        addSupplierHandler(data)
 
-}
+        handleAddSupplierForm(false)
+        setData({name:'', country:'', comment:''})
+       }; 
 
 
-  return (
-    <Modal show={props.showAddProducer}>
-      <Modal.Header>
-        <Modal.Title>Pridėti gamintoją</Modal.Title>
-      </Modal.Header>
+    return (
+        <Modal show={supplierAddForm}>
+            <Modal.Header>
+                <Modal.Title>Pridėti tiėkėją</Modal.Title>
+            </Modal.Header>
 
-      <Form onSubmit={onSubmit}>
-        <Modal.Body>
-          <Form.Group>
-            <Form.Label>
-              Pavadinimas{" "}
-              {inputText && <span>Laukas negali būti tuščias!!!</span>}
-            </Form.Label>
-            <Form.Control
-              type="text"
-              name="producer"
-              value={data.producer}
-              onChange={handleChange}
-            />
-          </Form.Group>
-        </Modal.Body>
+            <Form onSubmit={onSubmit}>
+                <Modal.Body>
+                    <Form.Group>
+                        <Form.Label>
+                            Pavadinimas{" "}
+                            {inputText && <span>Laukas negali būti tuščias!!!</span>}
+                        </Form.Label>
+                        <Form.Control
+                            type="text"
+                            name="name"
+                            value={data.name}
+                            onChange={handleChange}
+                        />
 
-        <Modal.Footer>
-        
-          <Button variant="success" type="submit">
-            Pridėti
-          </Button>{" "}
-          <Button variant="danger" onClick={cancelInput}>
-            Atšaukti
-          </Button>
-        </Modal.Footer>
-      </Form>
-    </Modal>
-  );
+                        <Form.Label>
+                            Šalis{" "}
+                            {inputText && <span> negali būti tuščias!!!</span>}
+                        </Form.Label>
+                        <Form.Control
+                            type="text"
+                            name="country"
+                            value={data.country}
+                            onChange={handleChange}
+                        />
+                    </Form.Group>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="success" type="submit">
+                        Pridėti
+                    </Button>{" "}
+                    <Button variant="danger" onClick={() => { handleAddSupplierForm(false) }}>
+                        Atšaukti
+                    </Button>
+                </Modal.Footer>
+            </Form>
+        </Modal>
+    );
 };
 
 export default AddSupplier;

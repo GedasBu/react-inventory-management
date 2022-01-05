@@ -351,7 +351,7 @@ app.post("/api/suppliers/add", (req, res) => {
   con.query(
     sql,
     [
-      req.body.producer,
+      req.body.name,
       req.body.country,
       req.body.comment
    
