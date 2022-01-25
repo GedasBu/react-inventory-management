@@ -3,21 +3,27 @@ import { MdDeleteForever, MdEdit } from "react-icons/md";
 import { useGlobalContext } from "../../context/SuppliersContext";
 
 const SupplierItem = (props)=>{
-  const {handleDelSupplierModal} = useGlobalContext();
+  const {handleDelSupplierModal,handleEditSupplierForm} = useGlobalContext();
   
+ 
+   const  editDataHandler =()=>{
+    const data = {id: props.id, name: props.supplier, country: props.country} 
+    handleEditSupplierForm(true, data)
 
+
+   }
 
 
 
 
     return (
-        <tr className="align-middle px-0">
+      <tr className="align-middle px-0">
       <td>{props.id}</td>
       <td>{props.supplier}</td>
       <td>{props.country}</td>
       <td className="text-center ">
        
-          <Button variant="primary" size="sm"  >
+          <Button variant="primary" size="sm"  onClick={editDataHandler}>
             <MdEdit />
           </Button>
    

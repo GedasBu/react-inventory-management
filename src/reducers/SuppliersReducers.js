@@ -1,4 +1,4 @@
-import { ADD_SUPPLIER, DEL_SUPPLIER, GET_SUPPLIERS, OPEN_ADD_SUPPLIER_FORM, OPEN_DEL_SUPPLIER_MODAL } from "../actions/types";
+import { ADD_SUPPLIER, DEL_SUPPLIER, GET_SUPPLIERS, OPEN_ADD_SUPPLIER_FORM, OPEN_DEL_SUPPLIER_MODAL, OPEN_EDIT_SUPPLIER_FORM } from "../actions/types";
 
 const SuppliersReducer = (state, action) => {
    
@@ -28,6 +28,13 @@ const SuppliersReducer = (state, action) => {
                ...state,
                delModal: action.payload,
                delSupplierId: action.id     
+            }
+        case OPEN_EDIT_SUPPLIER_FORM:
+            return{
+                ...state,
+                supplierEditForm: action.payload,
+                supplierEditData: action.data
+
             }
 
         default: return state;

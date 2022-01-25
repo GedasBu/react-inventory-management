@@ -4,12 +4,13 @@ import {useGlobalContext} from "../../context/SuppliersContext"
 import DeleteForm from "../Suppliers/DeleteForm";
 import AddSupplier from "./AddSupplier";
 import SuppliersTable from "./SuplliersTable";
+import EditSupplier from "./EditSupplier";
 
 
 
 
 const Suppliers =()=>{
-    const {suppliers,supplierAddForm, handleAddSupplierForm,delSupplierId } = useGlobalContext();  
+    const {suppliers,supplierAddForm, handleAddSupplierForm,delSupplierId,supplierEditData } = useGlobalContext();  
     
 
 
@@ -19,6 +20,7 @@ const Suppliers =()=>{
         <>
         <AddSupplier />
         <DeleteForm />
+        <EditSupplier data={supplierEditData}/>
 
          <Card className=" .brand mt-1 border-bottom-0 rounded-0 bg-light" style={{ width: "18rem" }}>
         <Card.Header as="h5" >Tiekėjai</Card.Header>

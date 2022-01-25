@@ -383,19 +383,20 @@ app.delete("/api/suppliers/delete/:id", (req, res) => {
 app.put("/api/suppliers/update/:id", (req, res) => {
   const sql = `
         UPDATE suppliers
-  SET producer = ?
+  SET name = ?, country = ?
   WHERE id=? 
       `;
   con.query(
     sql,
     
     [     
-      req.body.producer,
-      req.params.id
-     
+      req.body.supplier,
+      req.body.country,
+      req.params.id     
     ],
     (err, res) => {
-      if (err) throw err;    
+      if (err) throw err; 
+      console.log(req.body)   
       console.log("1 record updated");
     }
   );

@@ -1,5 +1,5 @@
 import { createContext, useContext, useReducer, useEffect, useState} from "react";
-import { getSuppliers, supplierAddForm, delSupplier,delSupplierModal} from "../actions/SuppliersActions";
+import { getSuppliers, supplierAddForm, delSupplier,delSupplierModal,editSupplierForm} from "../actions/SuppliersActions";
 import SuppliersReducer from "../reducers/SuppliersReducers";
 import axios from "axios";
 
@@ -8,7 +8,9 @@ const initialState = {
     suppliers: [],
     supplierAddForm: false,
     delModal: false,
-    delSupplierId:''
+    delSupplierId:'',
+    supplierEditForm: false,
+    supplierEditData: {name:'', country:''}
    
 }
 
@@ -38,31 +40,44 @@ const SuppliersProvider = ({ children }) => {
      
     }
 
+    const handleEditSupplierForm = (status, data)=>{
+        dispatch(editSupplierForm(status, data))
+       
+            
+    }
+
     const addSupplierHandler = (data) => {
         axios.post("http://localhost:3003/api/suppliers/add", data).then((res) => {
           setUpdated(Date.now());
         });
       }
 
-      const deleteSupplierHandler = (id) => {
-           
+      const deleteSupplierHandler = (id) => {           
         axios
           .delete("http://localhost:3003/api/suppliers/delete/" + id)
           .then((res) => {
             setUpdated(Date.now());
           });
         
-          handleDelSupplierModal(false,id);
-       
+          handleDelSupplierModal(false,id);     
         
       }; 
+
+      const editSupplierHandler =(data)=>{
+        axios
+        .put("http://localhost:3003/api/suppliers/update/" + data.id, data)
+        .then((res) => {
+          setUpdated(Date.now());
+        });
+
+      }
 
     
 
  
 
     return (
-        <SuppliersContext.Provider value={{...state, handleAddSupplierForm,addSupplierHandler,deleteSupplierHandler,handleDelSupplierModal }}>
+        <SuppliersContext.Provider value={{...state, handleAddSupplierForm,addSupplierHandler,deleteSupplierHandler,handleDelSupplierModal,handleEditSupplierForm,editSupplierHandler }}>
             {children}
         </SuppliersContext.Provider>
     )

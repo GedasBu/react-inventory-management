@@ -1,4 +1,4 @@
-import { ADD_SUPPLIER, DEL_SUPPLIER, GET_SUPPLIERS, OPEN_ADD_SUPPLIER_FORM, OPEN_DEL_SUPPLIER_MODAL} from "./types";
+import { ADD_SUPPLIER, DEL_SUPPLIER, EDIT_SUPPLIER, GET_SUPPLIERS, OPEN_ADD_SUPPLIER_FORM, OPEN_DEL_SUPPLIER_MODAL, OPEN_EDIT_SUPPLIER_FORM} from "./types";
 
 export const getSuppliers =(data)=>{
     return {
@@ -31,5 +31,20 @@ export const delSupplierModal = (status,id)=>{
         type: OPEN_DEL_SUPPLIER_MODAL,
         payload: status,
         id:id
+    }
+}
+
+export const editSupplier = (data)=>{
+    return  {
+        type: EDIT_SUPPLIER,
+        payload: data
+    }
+}
+
+export const editSupplierForm = (status, data)=>{
+    return {
+        type: OPEN_EDIT_SUPPLIER_FORM,
+        payload: status,
+        data: data
     }
 }
