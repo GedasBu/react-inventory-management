@@ -6,7 +6,7 @@ Warehouse stock management. Orders from suppliers. Calculation of warehouse inco
 
 ## Screenshots
 
-![Parts screen](https://prnt.sc/ilSoHgZlthzb)
+![Parts screen](img/parts.png)
 ![Makes screen](https://prnt.sc/e1BOuYm3G7dW)
 
 
